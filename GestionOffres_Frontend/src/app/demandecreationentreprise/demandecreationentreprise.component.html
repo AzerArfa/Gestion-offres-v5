@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajouter une entreprise</title>
+</head>
+<body>
+  <div class="full-screen-container">
+    <div class="form-container">
+      <div class="h2-container">
+          <h2>Demande d'inscription de votre entreprise</h2>
+          <h2>sur notre plateforme</h2>
+      </div>
+      <hr>
+      <form (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+        <div class="image-upload-container">
+            <label for="image-upload" class="image-upload-label">
+                <i class="upload-icon">📷</i>
+                Logo de votre entreprise
+                <span *ngIf="logoUploaded" class="checkmark" style="color:green"><i class="fas fa-check-circle"></i></span>
+            </label>
+            <input type="file" (change)="onFileSelected($event)" name="logo" id="image-upload" multiple hidden>
+        </div>
+        <div class="input-box full-width">
+          <input type="text" placeholder="Nom" [(ngModel)]="newEntreprise.name" name="name" required>
+        </div>
+        <div class="input-box half-width">
+          <input type="text" placeholder="Ville" [(ngModel)]="newEntreprise.ville" name="ville" required>
+          <input type="text" placeholder="Adresse" [(ngModel)]="newEntreprise.adresse" name="adresse" required>
+        </div>
+        <div class="input-box half-width">
+          <select (change)="onCategoryChange($event)" class="select-input" required>
+            <option value="" disabled selected>Choisir une secteur d'activité</option>
+            <option *ngFor="let categorie of categories" [value]="categorie.id">{{categorie.nomcategorie}}</option>
+          </select>
+          <input type="text" placeholder="Siège sociale" [(ngModel)]="newEntreprise.siegesociale" name="siegesociale" required>
+        </div>
+        <div class="input-box half-width">
+          <input type="text" placeholder="Matricule fiscale" [(ngModel)]="newEntreprise.Matricule" name="Matricule" required>
+          <input type="text" placeholder="Code TVA" [(ngModel)]="newEntreprise.codeTVA" name="codeTVA" required>
+        </div>
+        <div class="input-box half-width">
+          <div class="image-upload-container">
+            <label for="codetvadocument" class="image-upload-label">
+                <i class="fas fa-file-pdf upload-icon"></i> 
+                Document CodeTVA
+                <span *ngIf="codetvadocumentUploaded" class="checkmark" style="color:green"><i class="fas fa-check-circle"></i></span>
+            </label>
+            <input type="file" (change)="onDocumentCODETVASelected($event)" name="codetvadocument" id="codetvadocument" accept="application/pdf" style="opacity: 0;">
+          </div>
+          <div class="image-upload-container">
+            <label for="status" class="image-upload-label">
+                <i class="fas fa-file-pdf upload-icon"></i> 
+                Status
+                <span *ngIf="statusDocumentUploaded" class="checkmark" style="color:green"><i class="fas fa-check-circle"></i></span>
+                <input type="file" (change)="onDocumentSelected($event)" name="status" id="status" accept="application/pdf" style="opacity: 0;">
+            </label>
+          </div>
+        </div>
+        <hr>
+        <button type="submit" class="btn">Envoyer demande</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

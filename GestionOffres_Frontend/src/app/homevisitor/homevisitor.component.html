@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Offres</title>
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+</head>
+<body>
+    <!-- Header-->
+    <header class="bg-primary py-5">
+        <div class="container px-4 px-lg-5 my-5">
+          <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Les appels d'offres disponibles</h1>
+            <select [(ngModel)]="selectedCategoryId" (change)="onCategorySelected($event)"
+            class="form-control" style="width: 200px; margin: 20px auto;">
+      <option value="">Choisir un catégorie</option>
+      <option *ngFor="let category of categories" [value]="category.id">
+        {{ category.nomcategorie }}
+      </option>
+    </select>
+    
+  
+          </div>
+        </div>
+      </header>
+  
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" id="productContainer">
+                <!-- Dynamic appeloffre Template -->
+                <div class="col mb-5" *ngFor="let appeloffre of appeloffres">
+                    <div class="card h-100">
+                        <!-- appeloffre image-->
+                        <img class="card-img-top" [src]="appeloffre.img ? 'data:image/png;base64,' + appeloffre.img : 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg'" alt="appeloffre Image" />
+    
+                        <!-- appeloffre details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- appeloffre title-->
+                                <h3 class="fw-bolder">{{ appeloffre.titre }}</h3>
+                                <!-- appeloffre description-->
+                               
+                                <!-- appeloffre date-->
+                                <p>{{ appeloffre.datecreation | date }}</p>
+                                <p>{{ appeloffre.datelimitesoumission | date }}</p>
+                                <p>{{ appeloffre.localisation}}</p>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer (ensure you have an app-footer component or adjust as needed) -->
+    <app-footer></app-footer>
+</body>
+</html>

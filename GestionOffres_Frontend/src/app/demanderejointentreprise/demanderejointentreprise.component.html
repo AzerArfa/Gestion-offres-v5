@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajouter une entreprise</title>
+</head>
+<body>
+  <div class="full-screen-container">
+    <div class="form-container">
+      <div class="h2-container">
+          <h2>Demande de rejoindre votre entreprise</h2>
+          <h2>sur notre plateforme</h2>
+      </div>
+      <form (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+      
+        
+        <div class="input-box">
+          <input type="text" placeholder="Matricule" [(ngModel)]="joinrequest.entrepriseMatricule" name="entrepriseMatricule" required>
+        </div>
+   
+        <button type="submit" class="btn">Envoyer demande</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

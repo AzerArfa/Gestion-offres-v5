@@ -1,0 +1,146 @@
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css");
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.bg-primary {
+  background-color: #3B3F58 !important; 
+}
+
+.btn-outline-light {
+  border-color: #fff;
+  color: #fff;
+  background: transparent;
+}
+
+.btn-outline-light:hover {
+  background: #fff;
+  color: #3B3F58;
+}
+
+.container {
+  padding: 20px;
+}
+
+.card {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.card-img-top {
+  width: 100%;
+  height: auto;
+  border-radius: 8px 8px 0 0;
+}
+
+.card-body {
+  padding: 20px;
+  background-color: #ffffff;
+  color: #333;
+}
+
+.card-footer {
+  background-color: #ffffff;
+  border-top: none;
+}
+
+.btn-outline-dark {
+  border-color: #333;
+  color: #333;
+}
+
+.btn-outline-dark:hover {
+  background: #333;
+  color: #ffffff;
+}
+
+.text-center {
+  text-align: center;
+} 
+
+.enterprise-header {
+  background-color: #3B3F58; /* Deep blue background */
+  color: white;
+  padding: 20px 0;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.enterprise-logo {
+  height: 80px; /* Adjust size as necessary */
+  width: auto;
+}
+
+.enterprise-info {
+  flex-grow: 1; /* Allows it to take up any extra space */
+  padding-left: 20px; /* Spacing from the logo */
+}
+
+.enterprise-title {
+  margin-bottom: 0.5rem;
+  font-size: 2rem; /* Larger font size for the title */
+}
+
+.enterprise-detail {
+  font-size: 1.2rem; /* Slightly smaller font size for the detail */
+}
+
+.btn-custom {
+  background-color: #1ec6b3; /* Blue color for button */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-custom:hover {
+  background-color: #11a695; /* Darker blue for hover effect */
+  color: white;
+}
+
+/* Ensure existing styles don't conflict */
+.container {
+  max-width: 1200px; /* Adjust container size as necessary */
+  padding: 0 15px; /* Small padding on the sides */
+}
+
+.card, .card-img-top, .card-body, .card-footer {
+  /* No changes needed here unless further customization is desired */
+}
+
+.user-card {
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.2s;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.user-card:hover {
+  transform: scale(1.05);
+}
+
+.card-body {
+  text-align: center; /* Center-align the text in card */
+}
+
+.user-img {
+  width: 350px;  /* Fixed width for all user images */
+  height: 300px; /* Fixed height for all user images */
+  object-fit: cover; /* Ensures the image covers the space without distorting aspect ratio */
+}

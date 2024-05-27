@@ -1,0 +1,69 @@
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css");
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f0f8ff; /* Cyan blue background for the rest of the page */
+  margin: 0;
+  padding: 0;
+  height: 100vh; /* Ensure body covers full height of the viewport */
+}
+
+.bg-primary {
+  background-color: #3B3F58 !important; /* Dark blue for the header */
+}
+
+.bg-light {
+  background-color: #f0f8ff !important; /* Cyan blue for the content background */
+}
+
+.btn-outline-light {
+  border-color: #fff;
+  color: #fff;
+  background: transparent;
+}
+
+.btn-outline-light:hover {
+  background: #fff;
+  color: #3B3F58;
+}
+
+.container {
+  padding: 20px;
+}
+
+.card {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-top {
+  width: 100%;
+  height: auto;
+  border-radius: 8px 8px 0 0;
+}
+
+.card-body {
+  padding: 20px;
+  background-color: #ffffff;
+  color: #333;
+}
+
+.card-footer {
+  background-color: #ffffff;
+  border-top: none;
+}
+
+.btn-outline-dark {
+  border-color: #333;
+  color: #333;
+}
+
+.btn-outline-dark:hover {
+  background: #333;
+  color: #ffffff;
+}
+
+.text-center {
+  text-align: center;
+}

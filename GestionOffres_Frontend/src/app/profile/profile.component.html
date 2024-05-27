@@ -1,0 +1,212 @@
+<div class="container">
+  <div class="main-body">
+    <div class="row gutters-sm">
+      <div class="col-md-4 mb-3">
+        <!-- User Info Card -->
+        <div class="card user-info-card">
+          <div class="card-body">
+            <div class="d-flex flex-column align-items-center text-center">
+              <img [src]="currentUser.img ? 'data:image/png;base64,' + currentUser.img : 'https://bootdey.com/img/Content/avatar/avatar7.png'" alt="User" class="rounded-circle" width="150">
+              <div class="mt-3">
+                <h4>{{ currentUser.prenom }} {{ currentUser.name }}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Admin and SuperAdmin Notifications Cards -->
+        <div class="card notification-card" *ngIf="isAdmin">
+          <div class="card-body">
+              <h3 class="d-flex align-items-center mb-3">Notifications</h3>
+              <table class="table table-hover">
+                  <thead>
+                      <tr>
+                          <th>Notification Message</th>
+                          <th></th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let request of joinRequests">
+                        <td>{{request.userName}} veux rejoindre votre entreprise</td>
+                        <td>
+                            <button class="btn btn-success btn-sm" (click)="approveJoin(request.id)"><i class="fa fa-check"></i></button>
+                            <button class="btn btn-danger btn-sm" (click)="rejectJoin(request.id)"><i class="fa fa-times"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+              </table>
+          </div>
+      </div>
+      <div class="card notification-card" *ngIf="isSuperAdmin">
+        <div class="card-body">
+            <h3 class="d-flex align-items-center mb-3">Notifications</h3>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Notification Message</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let request of creationRequests">
+                      <td>Demande de création de : {{request.nom}} ({{request.matricule}})</td>
+                      <td>
+                          <button class="btn btn-success btn-sm" (click)="approveCreation(request.id,request.userId)"><i class="fa fa-check"></i></button>
+                          <button class="btn btn-danger btn-sm" (click)="rejectCreation(request.id)"><i class="fa fa-times"></i></button>
+                      </td>
+                  </tr>
+              </tbody>
+            </table>
+        </div>
+    </div>
+      </div>
+      
+      <div class="col-md-8">
+        <div class="card mb-3 user-details-card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <h3 class="mb-0">Nom</h3>
+              </div>
+              <div class="col-sm-9 text-secondary"  style="font-size: large;">
+                {{ currentUser.name }}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h3 class="mb-0">Prenom</h3>
+              </div>
+              <div class="col-sm-9 text-secondary"  style="font-size: large;">
+                {{ currentUser.prenom }}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h3 class="mb-0">Email</h3>
+              </div>
+              <div class="col-sm-9 text-secondary"  style="font-size: large;">
+                {{ currentUser.email }}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h3 class="mb-0">CIN</h3>
+              </div>
+              <div class="col-sm-9 text-secondary"  style="font-size: large;">
+                {{ currentUser.cin }}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h3 class="mb-0">Date de naissance</h3>
+              </div>
+              <div class="col-sm-9 text-secondary"  style="font-size: large;">
+                {{ formatDate(currentUser.datenais) }}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h3 class="mb-0">Lieu de naissance</h3>
+              </div>
+              <div class="col-sm-9 text-secondary"  style="font-size: large;">
+                {{ currentUser.lieunais }}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-12">
+                <a class="btn btn-info" (click)="openUpdateUserDialog(currentUser.id)">Modifier</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card mb-3 entreprise-requests-card">
+          <div class="card-body">
+            <h3 class="d-flex align-items-center mb-3">
+              <i class="material-icons text-info mr-2">assignment</i>
+              <span style="font-size:x-large">Entreprises</span>
+            </h3>
+            
+            <div class="row">
+              <div class="col-sm-6 text-left"> <!-- Adjust the column size as needed -->
+                  <a class="btn btn-info" target="__blank" [routerLink]="['/demandecreationentreprise']">Ajouter Entreprise</a>
+              </div>
+              <div class="col-sm-6 text-left"> <!-- Adjust the column size as needed -->
+                  <div class="d-flex justify-content-end">  <div class="form-group">
+                            <select id="sortOption" [(ngModel)]="sortOption" (change)="sortList()" class="form-control">
+                                <option value="entreprises">Entreprises d'abord</option>
+                                <option value="demands">Demandes d'abord</option>
+                            </select>
+                        </div>
+                  </div>
+              </div>
+          </div>
+            <table class="table user-list">
+              <thead>
+                <tr>
+                  <th><span>Logo</span></th>
+                  <th><span>Nom</span></th>
+                  <th><span>Adresse</span></th>
+                  <th><span>Secteur d'activité</span></th>
+                  <th><span>Matricule</span></th>
+                  <th><span>Ville</span></th>
+                  <th><span>Siege Sociale</span></th>
+                  <th><span>Code TVA</span></th>
+                  <th>&nbsp;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of sortedList">
+                  <td>
+                    <img *ngIf="item.logo" [src]="'data:image/png;base64,' + item.logo" alt="Logo" class="pull-left photo">
+                  </td>
+                  <td>{{ item.name || item.nom }}</td>
+                  <td>{{ item.adresse }}</td>
+                  <td>{{ item.secteuractivite }}</td>
+                  <td>{{ item.matricule }}</td>
+                  <td>{{ item.ville }}</td>
+                  <td>{{ item.siegesociale }}</td>
+                  <td>{{ item.codeTVA }}</td>
+                  <td *ngIf="item.status === 'pending'">
+                    <span class="badge bg-warning">En attente</span>
+                  </td>
+                  <td *ngIf="isAdmin && !item.status">
+                    <a class="table-link" [routerLink]="['/appeloffresadmin', item.id]" >
+                      <span class="fa-stack">
+                        <i class="fa fa-square fa-stack-2x"></i>
+                        <i class="fa fa-eye fa-stack-1x fa-inverse"></i>
+                      </span>
+                    </a>
+                    
+                    
+                    <a class="table-link" (click)="openUpdateEntrepriseDialog(item.id)" style="color:#28a745">
+                      <span class="fa-stack">
+                        <i class="fa fa-square fa-stack-2x"></i>
+                        <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+                      </span>
+                    </a>
+                    
+                    
+                    <a class="table-link danger" (click)="supprimerEntreprise(item.id)">
+                      <span class="fa-stack">
+                        <i class="fa fa-square fa-stack-2x"></i>
+                        <i class="fa fa-trash fa-stack-1x fa-inverse"></i>
+                      </span>
+                    </a>
+                    
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f8ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh; /* Ensures the body takes full viewport height */
+    margin: 0;
+    padding: 0; /* Remove default margin and padding */
+}
+
+.container {
+    width: 90%;
+    max-width: 600px;
+    background-color: #ffffff;
+    padding: 20px; /* Reduced padding for more space efficiency */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 10px; /* Reduced margin */
+}
+
+p {
+    color: #666;
+    margin-bottom: 20px; /* Reduced margin */
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px; /* Reduced margin */
+}
+
+.btn {
+    padding: 10px 20px; /* Reduced padding */
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease;
+    width: 48%; /* Ensure buttons are evenly spaced */
+}
+
+#join {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#create {
+    background-color: #008CBA;
+    color: white;
+}
+
+.btn:hover {
+    transform: scale(1.05); /* Subtle scale to prevent layout shift */
+}
+
+.btn:focus {
+    outline: none;
+}

@@ -1,0 +1,26 @@
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+    <div class="row bootstrap snippets bootdeys">
+        <div class="col-md-12">
+            <h2>Liste des entreprises</h2>
+            <!-- <div class="form-group">
+                <input type="text" class="form-control" placeholder="Search...">
+            </div> -->
+        </div>
+    </div>
+    <div *ngFor="let entreprise of entreprises" class="member-entry">
+        <a href="#" class="member-img">
+            <img  [src]="'data:image/png;base64,' + entreprise.logo" alt="Logo" class="pull-left photo">
+                 <i class="fa fa-forward"></i>
+        </a>
+        <div class="member-details">
+            <h4><a href="#">{{ entreprise.name }}</a></h4>
+            <div class="row info-list">
+                <div class="col-sm-4"><i class="fa fa-map-marker"></i> {{ entreprise.adresse }}</div>
+                <div class="col-sm-4"><i class="fa fa-sitemap"></i> {{ entreprise.secteuractivite }}</div>
+                <div class="col-sm-4"><i class="fa fa-building"></i> {{ entreprise.ville }}</div>
+                <div class="col-sm-4"><i class="fa fa-home"></i> {{ entreprise.siegesociale }}</div>
+            </div>
+        </div>
+    </div>
+</div>

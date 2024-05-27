@@ -1,0 +1,146 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f8ff;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    margin: 0;
+    padding-top: 70px; /* Adjust this value based on the height of your navbar */
+  }
+  
+  .container {
+    width: 95%;
+    max-width: 1200px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .details-container {
+    width: 100%;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    border: 3px solid #ddd; /* Added border for stroke effect */
+  }
+  
+  .header-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  
+  .image-section {
+    flex-shrink: 0;
+  }
+  
+  .offer-image {
+    width: 200px;
+    height: 200px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+  
+  .offer-details-section {
+    flex-grow: 1;
+  }
+  
+  .offer-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+    color: #306090;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #306090;
+    padding-bottom: 5px;
+  }
+  
+  .offer-description, .location-info {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+  }
+  
+  .location-info {
+    color: #306090;
+    font-weight: bold;
+  }
+  
+  .entreprise-info {
+    margin-top: 20px;
+    border-top: 1px solid #ddd; /* Added border for stroke effect */
+    padding-top: 20px;
+  }
+  
+  .info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .info-table th, .info-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .card.mb-3 {
+    width: 100%;
+  }
+  
+  .card-body {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border: 0.3px solid #ddd; /* Added border for stroke effect */
+  }
+  
+  .table.user-list {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .table.user-list th, .table.user-list td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .table.user-list th {
+    background-color: #f1f1f1;
+    font-weight: bold;
+  }
+  
+  .table.user-list td {
+    background-color: #fafafa;
+  }
+  
+  .download-link {
+    color: #a92020;
+    font-size: 1.5rem;
+    text-align: center;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer; /* Change cursor to pointer on hover */
+  }
+  
+  .download-link i {
+    font-size: 1.5rem;
+  }
+  
+  .download-link:hover {
+    color: #e32020;
+  }
+  

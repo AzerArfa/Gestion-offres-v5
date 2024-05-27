@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajouter une entreprise</title>
+</head>
+<body>
+  <div class="full-screen-container">
+    <div class="form-container">
+      <h2>Ajouter une entreprise</h2>
+      <form (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+        <div class="input-box">
+          <input type="text" placeholder="Name" [(ngModel)]="newEntreprise.name" name="name" required>
+        </div>
+        <div class="input-box">
+          <input type="email" placeholder="Adresse" [(ngModel)]="newEntreprise.adresse" name="adresse" required>
+        </div>
+        <div class="input-box">
+          <input type="text" placeholder="Secteur d'activité" [(ngModel)]="newEntreprise.secteuractivite" name="secteuractivite" required>
+        </div>
+        <div class="input-box">
+          <input type="text" placeholder="Matricule" [(ngModel)]="newEntreprise.Matricule" name="Matricule" required>
+        </div>
+        <div class="input-box">
+          <input type="text" placeholder="Ville" [(ngModel)]="newEntreprise.ville" name="ville" required>
+        </div>
+        <div class="input-box">
+          <input type="text" placeholder="Siège sociale" [(ngModel)]="newEntreprise.siegesociale" name="siegesociale" required>
+        </div>
+        <div class="input-box">
+          <input type="text" placeholder="Code TVA" [(ngModel)]="newEntreprise.codeTVA" name="codeTVA" required>
+        </div>
+        <div class="input-box">
+          <input type="file" (change)="onFileSelected($event)" name="logo" class="form-control">
+        </div>
+        <button type="submit" class="btn">Ajout Entreprise</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

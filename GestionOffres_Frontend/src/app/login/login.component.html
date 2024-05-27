@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+  <div class="container">
+    <div class="left-section">
+      <img src="https://media-animation.be/local/cache-vignettes/L960xH640/appeloffre-8e211.jpg" alt="Doctor Illustration">
+    </div>
+    <div class="right-section">
+      <div class="login-container">
+         <h1>Bienvenue</h1>
+        <form class="login-form" autocomplete="off">
+          <input type="text" placeholder="Email" name="email" [(ngModel)]="user.email" required/>
+          <input type="password" placeholder="Password" name="password" [(ngModel)]="user.password" required/>
+          <div class="forgot-password">
+            <a href="#">Forgot Password?</a>
+          </div>
+          <button type="submit" (click)="Login()">Sign In</button>
+          <p class="signup">Don't have an account? <a href="/signUp">Sign Up</a></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

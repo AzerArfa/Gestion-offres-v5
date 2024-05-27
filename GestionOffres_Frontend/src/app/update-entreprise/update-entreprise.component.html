@@ -1,0 +1,139 @@
+<!-- edit-entreprise-dialog.component.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+  <div mat-dialog-content>
+    <h2>Modifier Votre Entreprise</h2>
+    <form (ngSubmit)="updateEntreprise()">
+      <div class="input-box image-preview" (click)="openFileInput()">
+        <input
+          type="file"
+          id="logoInput"
+          (change)="onFileSelected($event)"
+          name="logo"
+          class="form-control"
+          style="display: none"
+        />
+        <img
+          *ngIf="logoPreview"
+          class="entreprise-logo"
+          [src]="logoPreview"
+          alt="Logo Preview"
+        />
+        
+      </div>
+      
+  
+      <div class="input-box full-width">
+        <input
+          type="text"
+          [(ngModel)]="currentEntreprise.name"
+          name="name"
+          class="form-control"
+          placeholder="Nom"
+        />
+      </div>
+      <div class="input-box half-width">
+        <input
+          type="text"
+          [(ngModel)]="currentEntreprise.ville"
+          name="ville"
+          class="form-control"
+          placeholder="City"
+        />
+      </div>
+      <div class="input-box half-width">
+        <input
+          type="text"
+          [(ngModel)]="currentEntreprise.adresse"
+          name="adresse"
+          class="form-control"
+          placeholder="Adresse"
+        />
+      </div>
+      <div class="input-box half-width">
+        <select (change)="onCategoryChange($event)" class="form-control select-input" required>
+          <option value="" disabled>Choisir une secteur d'activité</option>
+          <option *ngFor="let categorie of categories" [value]="categorie.id" [selected]="categorie.nomcategorie === currentEntreprise.secteuractivite">{{categorie.nomcategorie}}</option>
+        </select>
+      </div>
+      <div class="input-box half-width">
+        <input
+          type="text"
+          [(ngModel)]="currentEntreprise.siegesociale"
+          name="siegesociale"
+          class="form-control"
+          placeholder="Head Office"
+        />
+      </div>
+      <div class="input-box half-width">
+        <input
+          type="text"
+          [(ngModel)]="currentEntreprise.matricule"
+          name="matricule"
+          class="form-control"
+          placeholder="Matricule" readonly
+        />
+      </div>
+      <div class="input-box half-width">
+        <input
+          type="text"
+          [(ngModel)]="currentEntreprise.codeTVA"
+          name="codeTVA"
+          class="form-control"
+          placeholder="TAX Code"
+        />
+      </div>
+  
+      <div class="input-box full-width">
+        <label class="custom-file-upload">
+          <i class="fas fa-file-pdf"></i> Document CodeTVA
+          <input
+            type="file"
+            (change)="onDocumentCODETVASelected($event)"
+            name="codetvadocument"
+            id="codetvadocument"
+            accept="application/pdf"
+          />
+          <span *ngIf="codetvadocumentUploaded" class="checkmark"
+            ><i class="fas fa-check-circle"></i
+          ></span>
+        </label>
+      </div>
+      <div class="input-box full-width">
+        <label class="custom-file-upload">
+          <i class="fas fa-file-pdf"></i> Status
+          <input
+            type="file"
+            (change)="onDocumentSelected($event)"
+            name="status"
+            id="status"
+            accept="application/pdf"
+          />
+          <span *ngIf="statusDocumentUploaded" class="checkmark"
+            ><i class="fas fa-check-circle"></i
+          ></span>
+        </label>
+      </div>
+      <div mat-dialog-actions>
+        <button
+        style="margin-left: 8px; background-color: #26a69a; color: white"
+        mat-raised-button
+        type="submit"
+      >
+        Modifier
+      </button>
+        <button mat-raised-button color="warn" mat-dialog-close="">
+          Anuuler
+        </button>
+      
+      </div>
+    </form>
+  </div>
+</body>
+</html>

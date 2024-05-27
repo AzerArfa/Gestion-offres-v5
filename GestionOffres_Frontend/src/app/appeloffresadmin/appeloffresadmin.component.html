@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Offres</title>
+</head>
+<body>
+    <header class="enterprise-header">
+        <div class="container header-container">
+            <div class="header-content">
+                <img src="{{ entreprise?.logo ? 'data:image/png;base64,' + entreprise?.logo : 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg' }}" alt="Enterprise Logo" class="enterprise-logo">
+                <div class="enterprise-info">
+                    <h1 class="enterprise-title">{{ entreprise?.name }}</h1>
+                    <p class="enterprise-detail">{{ entreprise?.ville }}</p>
+                </div>
+                <button class="btn btn-custom" [routerLink]="['/addAppelOffre', entrepriseId]">Créer un appel d'offre</button>
+            </div>
+        </div>
+    </header>
+    
+    
+    
+    <section class="py-5" *ngIf="isLoading">
+        <div class="container px-4 px-lg-5 mt-5 text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5" *ngIf="!isLoading">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" id="productContainer">
+                <div class="col mb-5" *ngFor="let appeloffre of appeloffres">
+                    <div class="card h-100">
+                        <img class="card-img-top" [src]="appeloffre.img ? 'data:image/png;base64,' + appeloffre.img : 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg'" alt="appeloffre Image" />
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <h3 class="fw-bolder">{{ appeloffre.titre }}</h3>
+                                <p>{{ appeloffre.datelimitesoumission | date }}</p>
+                                <div>
+                                    <a class="table-link" [routerLink]="['/updateappeloffre', appeloffre.id]">
+                                        <span class="fa-stack" style="color: green;">
+                                            <i class="fa fa-square fa-stack-2x"></i>
+                                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                    <a class="table-link danger" style="color: red;" (click)="supprimerAppelOffre(appeloffre.id)">
+                                        <span class="fa-stack">
+                                            <i class="fa fa-square fa-stack-2x"></i>
+                                            <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" [routerLink]="['/detailsAppelOffreAdmin', appeloffre.id]">Voir détails</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <hr class="my-4">
+
+    <section *ngIf="!isLoading && entreprise?.users">
+        <div class="container px-4 px-lg-5 mt-5">
+            <h2 class="text-center mb-4">Utilisateurs de {{ entreprise?.name }}</h2>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col" *ngFor="let user of entreprise?.users">
+                    <div class="card user-card">
+                        <img [src]="user.img ? 'data:image/png;base64,' + user.img : 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg'" class="card-img-top user-img" alt="User Image">
+                        <div class="card-body">
+                            <h3 class="card-title">{{user.prenom}} {{ user.name }}</h3>
+                            <p class="card-text">{{ user.email }}</p>
+                            <!-- <a href="#" class="btn btn-primary">View Profile</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+</body>
+</html>

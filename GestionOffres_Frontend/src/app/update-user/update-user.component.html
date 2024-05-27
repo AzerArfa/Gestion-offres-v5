@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- edit-user-dialog.component.html -->
+  <div mat-dialog-content>
+    <h2>Modifier votre profile</h2>
+    <form (ngSubmit)="updateUser()">
+      <div class="input-box image-preview" *ngIf="currentUser.imgUrl" (click)="openFileInput()">
+        <input type="file" (change)="onFileSelected($event)" name="img" class="form-control" style="opacity: 0;">
+        <img class="user-image" [src]="userImagePreview" alt="User Image">
+      </div>
+
+      <div class="input-box">
+        <input type="text" placeholder="Email" [(ngModel)]="currentUser.email" name="email" class="form-control" required>
+      </div>
+      <div class="input-box">
+        <input type="text" placeholder="CIN" [(ngModel)]="currentUser.cin" name="cin" class="form-control" required>
+      </div>
+      <div class="form-row">
+        <div class="input-box half-width">
+          <input type="text" placeholder="Nom" [(ngModel)]="currentUser.name" name="username" class="form-control" required>
+        </div>
+        <div class="input-box half-width">
+          <input type="text" placeholder="Prenom" [(ngModel)]="currentUser.prenom" name="prenom" class="form-control" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="input-box half-width">
+          <input type="text" placeholder="Lieu de Naissance" [(ngModel)]="currentUser.lieunais" name="lieunais" class="form-control" required>
+        </div>
+        <div class="input-box half-width">
+          <input type="date" placeholder="Date de Naissance" [(ngModel)]="currentUser.datenais" name="datenais" class="form-control" required>
+        </div>
+      </div>
+
+      <div mat-dialog-actions>
+        <button style="margin-left: 8px; background-color: #26a69a; color: white;" mat-raised-button type="submit" [disabled]="!currentUser.email || !currentUser.name || !currentUser.prenom || !currentUser.cin || !currentUser.datenais || !currentUser.lieunais">Modifier</button>
+        <button mat-raised-button color="warn" mat-dialog-close>Annuler</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

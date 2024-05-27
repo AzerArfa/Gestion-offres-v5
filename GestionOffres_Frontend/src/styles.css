@@ -1,0 +1,13 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* styles.css */
+/* styles.css */
+
+
+@import 'ngx-toastr/toastr';
+.custom-dialog-container .mat-dialog-container {
+    transform: translate(-50%, -50%) !important;
+  }
+  
