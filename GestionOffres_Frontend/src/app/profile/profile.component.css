@@ -367,3 +367,6 @@ body {
     padding-right: 8px;
     padding-left: 8px;
 }
+.btn-info {
+    margin-right: 10px; /* Adjust the space between the buttons */
+}

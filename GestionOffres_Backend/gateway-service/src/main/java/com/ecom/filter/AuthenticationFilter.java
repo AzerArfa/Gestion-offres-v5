@@ -92,6 +92,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                         boolean isAuthorized = roles.stream().anyMatch(role ->
                             (role.equals("ROLE_ADMIN") && (
                                     requestPath.startsWith("/auth/notification") ||
+                                    requestPath.startsWith("/auth/utilisateur") ||
                                 requestPath.startsWith("/offer/admin") ||
                                 requestPath.matches("/auth/approve-join-request/.*") ||
                                 requestPath.matches("/auth/reject-join-request/.*") ||
@@ -100,7 +101,9 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                                 ||
                                 requestPath.matches("/auth/requestsbyuserid/.*")
                             )) ||
-                            (role.equals("ROLE_USER") && requestPath.startsWith("/offer/user")||
+                            (role.equals("ROLE_USER") && 
+                            		requestPath.startsWith("/offer/user")||
+                            		requestPath.startsWith("/auth/utilisateur") ||
                                     requestPath.matches("/auth/entreprise/.*")) ||
                             (role.equals("ROLE_SUPERADMIN") && (
 

@@ -22,11 +22,12 @@ public interface AuthService {
     Boolean hasUserWithEmail(String email);
 
     UserDto getUserById(UUID id);
+    User findUserById(UUID id);
     List<UserDto> getAllUsers();
     public boolean checkIfPasswordNeedsUpdate(User user);
     UserDto makeAdmin(UUID id);
 
-	ResponseEntity<?> updatePasswordById(ChangePasswordDto changePasswordDto);
+    ResponseEntity<?> updatePasswordByEmail(ChangePasswordDto changePasswordDto);
 	ResponseEntity<?> updateUserById(UserDto userDto);
 	UserDto makeUser(UUID id);
 	boolean deleteUserById(UUID userId) throws UserNotFoundException;
@@ -34,4 +35,7 @@ public interface AuthService {
 	List<EntrepriseDto> getEntreprisesByUserId(UUID userId);
 
 	void addEntrepriseToUser(UUID userId, EntrepriseDto entrepriseDto);
+
+
+	int getRemainingDaysForPasswordChange(User user);
 }

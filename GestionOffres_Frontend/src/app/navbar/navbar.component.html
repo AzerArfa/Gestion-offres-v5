@@ -6,10 +6,10 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-        <li class="nav-item"><a class="nav-link active" aria-current="page" [routerLink]="'/homevisitor'" *ngIf="!isloggedIn">Accueil</a></li>
-        <li class="nav-item"><a class="nav-link active" aria-current="page" [routerLink]="'/home'" *ngIf="isloggedIn">Accueil</a></li>
+        <li class="nav-item"><a class="nav-link active" aria-current="page" [routerLink]="'/homevisitor'" *ngIf="!isloggedIn && !isSuperAdmin">Accueil</a></li>
+        <li class="nav-item"><a class="nav-link active" aria-current="page" [routerLink]="'/home'" *ngIf="isloggedIn && !isSuperAdmin">Accueil</a></li>
         <li class="nav-item"><a class="nav-link active" aria-current="page" [routerLink]="'/listentreprises'">Entreprises</a></li>
-        <li class="nav-item"><a class="nav-link active" aria-current="page" [routerLink]="'/actionentreprise'" *ngIf="isloggedIn">Action</a></li>
+        <li class="nav-item"><a class="nav-link active" aria-current="page" [routerLink]="'/actionentreprise'" *ngIf="isloggedIn && !isSuperAdmin">Action</a></li>
         <li class="nav-item" *ngIf="isSuperAdmin"><a class="nav-link" [routerLink]="'/users'">Utilisateurs</a></li>
         <li class="nav-item" *ngIf="isSuperAdmin"><a class="nav-link" [routerLink]="'/gestioncategories'">Catégories</a></li>
       </ul>

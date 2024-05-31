@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -166,12 +167,12 @@ userDto.setRoles(roleDtos);
         passwordRepository.save(initialPassword);
         return createdUser.getUserDto();
     }
-
     @Transactional
-    public ResponseEntity<?> updatePasswordById(ChangePasswordDto changePasswordDto) {
-    	Password newPassword = new Password();
+    @Override
+    public ResponseEntity<?> updatePasswordByEmail(ChangePasswordDto changePasswordDto) {
+        Password newPassword = new Password();
         try {
-            Optional<User> userOptional = userRepository.findById(changePasswordDto.getId());
+            Optional<User> userOptional = userRepository.findFirstByEmail(changePasswordDto.getEmail());
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
                 // Retrieve the most recent password
@@ -185,30 +186,29 @@ userDto.setRoles(roleDtos);
                         .noneMatch(p -> bCryptPasswordEncoder.matches(changePasswordDto.getNewPassword(), p.getPassword()));
 
                     if (!isUnique) {
-                        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("New password cannot be the same as any previous passwords.");
+                        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Map.of("message", "Le nouveau mot de passe ne peut pas être identique aux mots de passe précédents."));
                     }
 
                     // Encode new password and add to the passwords list
-                   
                     newPassword.setPassword(bCryptPasswordEncoder.encode(changePasswordDto.getNewPassword()));
                     newPassword.setCreationDate(new Date());
                     newPassword.setUser(user);
                     user.getPasswords().add(newPassword);
 
                     userRepository.save(user);
-                    UserDto userDto = new UserDto();
-                    userDto.setId(user.getId());
-                    return ResponseEntity.status(HttpStatus.OK).body(userDto);
+                    return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Mot de passe mis à jour avec succès."));
                 } else {
-                    return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Old password is incorrect.");
+                    return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Map.of("message", "Ancien mot de passe est incorrect."));
                 }
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Utilisateur non trouvé."));
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "Internal Server Error"));
         }
     }
+
+
     @Transactional
     @Override
     public ResponseEntity<?> updateUserById(UserDto userDto) {
@@ -270,7 +270,11 @@ userDto.setRoles(roleDtos);
             return new RuntimeException("User not found");
         });
     }
-
+    @Override
+    public User findUserById(UUID id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        return userOptional.orElse(null);
+    }
     @Transactional
     @Override
     public List<UserDto> getAllUsers() {
@@ -327,7 +331,24 @@ userDto.setRoles(roleDtos);
 
         return differenceInDays >= 30;
     }
+    @Override
+    public int getRemainingDaysForPasswordChange(User user) {
+        if (user.getPasswords() == null || user.getPasswords().isEmpty()) {
+            return -1; // Indicates no password found or no need to change
+        }
 
+        // Find the most recent password's creation date
+        Date lastPasswordCreationDate = user.getPasswords().stream()
+            .max(Comparator.comparing(Password::getCreationDate))
+            .map(Password::getCreationDate)
+            .orElse(new Date(0)); // This defaults to a very old date if somehow no dates are found
+
+        long differenceInMilliseconds = new Date().getTime() - lastPasswordCreationDate.getTime();
+        long differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+        long remainingDays = 30 - differenceInDays;
+
+        return (int) remainingDays;
+    }
     @PostConstruct
     @Transactional
     public void createAdminAccount() {

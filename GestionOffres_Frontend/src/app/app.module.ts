@@ -43,12 +43,17 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 
+import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatListModule } from '@angular/material/list';
 import { MatBadgeModule } from '@angular/material/badge';
 import { ConsulterentrepriseComponent } from './consulterentreprise/consulterentreprise.component';
 import { NotificationslistdialogComponent } from './notificationslistdialog/notificationslistdialog.component';
 import { RequestDialogComponent } from './request-dialog/request-dialog.component';
 import { EntrepriseRequestDialogComponent } from './entreprise-request-dialog/entreprise-request-dialog.component';
+import { PasswordChangeWarningComponent } from './password-change-warning/password-change-warning.component';
+import { PasswordUpdateDialogComponent } from './password-update-dialog/password-update-dialog.component';
 
 
 @NgModule({
@@ -83,7 +88,9 @@ import { EntrepriseRequestDialogComponent } from './entreprise-request-dialog/en
     ConsulterentrepriseComponent,
     NotificationslistdialogComponent,
     RequestDialogComponent,
-    EntrepriseRequestDialogComponent
+    EntrepriseRequestDialogComponent,
+    PasswordChangeWarningComponent,
+    PasswordUpdateDialogComponent
     
   ],
   imports: [ToastrModule.forRoot({
@@ -100,6 +107,10 @@ import { EntrepriseRequestDialogComponent } from './entreprise-request-dialog/en
     RecaptchaModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    
+    MatInputModule,
     MatDialogModule,
     MatSnackBarModule,
     MatButtonModule,

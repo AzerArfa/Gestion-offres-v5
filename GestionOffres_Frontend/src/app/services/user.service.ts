@@ -8,7 +8,12 @@ import { Entreprise } from '../model/entreprise.model';
 import { DemandeAjoutEntreprise } from '../model/demandeajoutentreprise.model';
 import { DemandeRejoindreEntreprise } from '../model/demanderejoindreentreprise.model';
 import { Notification } from '../model/notification.model';
-
+export interface ChangePasswordDto {
+  email: string;
+  oldPassword: string;
+  newPassword: string;
+  newPasswordMatch: string;
+}
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -190,4 +195,12 @@ deleteNotificationsByAppelOffreId(idAppelOffre: string): Observable<void> {
 downloadDocument(url: string): Observable<Blob> {
   return this.http.get(url, {  headers: this.getAuthHeaders(),responseType: 'blob' });
 }
+
+checkPasswordChangeNecessity(userId: string): Observable<number> {
+  return this.http.get<number>(`${authApiURL}/utilisateur/${userId}/password-change-necessity`, { headers: this.getAuthHeaders() });
+}
+updatePasswordByEmail(changePasswordDto: ChangePasswordDto): Observable<any> {
+  return this.http.post(`${authApiURL}/utilisateur/update-password`, changePasswordDto, { headers: this.getAuthHeaders() });
+}
+
 }

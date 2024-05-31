@@ -6,13 +6,13 @@ import { AuthService } from '../services/auth.service';
 import { DemandeAjoutEntreprise } from '../model/demandeajoutentreprise.model';
 import { DemandeRejoindreEntreprise } from '../model/demanderejoindreentreprise.model';
 import { ToastrService } from 'ngx-toastr';
-import { map } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { UpdateEntrepriseComponent } from '../update-entreprise/update-entreprise.component';
 import { UpdateUserComponent } from '../update-user/update-user.component';
 import { MatDialog } from '@angular/material/dialog';
 import { RequestDialogComponent } from '../request-dialog/request-dialog.component';
 import { EntrepriseRequestDialogComponent } from '../entreprise-request-dialog/entreprise-request-dialog.component';
+import { PasswordUpdateDialogComponent } from '../password-update-dialog/password-update-dialog.component';
 
 @Component({
   selector: 'app-profile',
@@ -64,6 +64,16 @@ export class ProfileComponent implements OnInit {
     const dialogRef = this.dialog.open(RequestDialogComponent, {
       width: '400px',
       data: { user: request }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+  openPasswordUpdateDialog(): void {
+    const dialogRef = this.dialog.open(PasswordUpdateDialogComponent, {
+      width: '400px',
+      data: { email: this.currentUser.email } // Pre-fill email if necessary
     });
 
     dialogRef.afterClosed().subscribe(result => {

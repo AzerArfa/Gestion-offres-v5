@@ -251,14 +251,12 @@ JSONObject jsonResponse = new JSONObject();
 	            return ResponseEntity.status(500).body("Error updating user");
 	        }
 	    }
-	    @PostMapping("/updatepassword")
+	    @PostMapping("/utilisateur/update-password")
 	    public ResponseEntity<?> updatePassword(@RequestBody ChangePasswordDto changePasswordDto) {
-	        try {
-	            return authService.updatePasswordById(changePasswordDto);
-	        } catch (Exception ex) {
-	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Something went wrong");
-	        }
+	        return authService.updatePasswordByEmail(changePasswordDto);
 	    }
+
+
 	    @PostMapping(value = "/user/{userId}/add-entreprise", consumes = "multipart/form-data", produces = "application/json")
 	    public ResponseEntity<Map<String, String>> addEntrepriseToUser(
 	            @PathVariable UUID userId,
@@ -553,7 +551,16 @@ public ResponseEntity<byte[]> downloadCodeTVADocument(@PathVariable UUID id) {
         return ResponseEntity.notFound().build();
     }
 }
+@GetMapping("/utilisateur/{userId}/password-change-necessity")
+public ResponseEntity<Integer> informUserOfPasswordChangeNecessity(@PathVariable UUID userId) {
+    User user = authService.findUserById(userId);
+    if (user == null) {
+        return ResponseEntity.notFound().build(); // Return 404 if user not found
+    }
 
+    int remainingDays = authService.getRemainingDaysForPasswordChange(user);
+    return ResponseEntity.ok(remainingDays);
+}
 @GetMapping("/download/status/{id}")
 public ResponseEntity<byte[]> downloadStatusDocument(@PathVariable UUID id) {
     Optional<DemandeAjoutEntreprise> demandeOptional = entrepriseRequestService.getRequestById(id);

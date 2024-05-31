@@ -40,10 +40,14 @@ public class RoleServiceImpl implements RoleService {
             roleRepository.save(role);
         }
         
-        // Add role to user and save
-        user.getRoles().add(role);
-        userRepository.save(user);
+        // Check if the user already has the role
+        if (!user.getRoles().contains(role)) {
+            // Add role to user and save
+            user.getRoles().add(role);
+            userRepository.save(user);
+        }
     }
+
 
 
     private static final Logger log = LoggerFactory.getLogger(RoleServiceImpl.class);

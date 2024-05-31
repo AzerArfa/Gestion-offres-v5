@@ -35,29 +35,33 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.refreshNavbar();
-    if (this.isloggedIn) {
-      this.fetchNotifications();
-    }
     // Subscribe to changes in user info and login status
     this.userInfoSubscription = this.authService.userInfo.subscribe(userInfo => {
       this.userInfo = userInfo;
       console.log('Navbar user info updated:', this.userInfo);
       this.cdr.detectChanges(); // Manually trigger change detection
     });
-
-    this.userInfoSubscription = this.authService.isloggedIn.subscribe(isLoggedIn => {
+  
+    this.authService.isloggedIn.subscribe(isLoggedIn => {
       this.isloggedIn = isLoggedIn;
       this.cdr.detectChanges(); // Manually trigger change detection
       if (isLoggedIn) {
+        this.notifications = [];  // Clear notifications array
         this.fetchNotifications();
       }
     });
-
+  
     // Initialize with current state
     this.userInfo = this.authService.getUserInfo();
     this.isloggedIn = this.authService.isloggedInState;
-    this.isSuperAdmin = this.authService.isSuperAdmin(); 
+    this.isSuperAdmin = this.authService.isSuperAdmin();
+    
+    if (this.isloggedIn) {
+      this.notifications = [];  // Clear notifications array
+      this.fetchNotifications();
+    }
   }
+  
 
   refreshNavbar(): void {
     this.userInfo = this.authService.getUserInfo();
@@ -68,6 +72,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   fetchNotifications(): void {
+    this.notifications = [];  // Clear notifications array
     this.userIdSubscription = this.authService.getUserId().subscribe(userId => {
       if (userId) {
         this.userService.getUserById(userId).subscribe({
@@ -110,6 +115,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       }
     });
   }
+  
 
   toggleSortOrder(): void {
     this.sortOrder = this.sortOrder === 'latest' ? 'earliest' : 'latest';

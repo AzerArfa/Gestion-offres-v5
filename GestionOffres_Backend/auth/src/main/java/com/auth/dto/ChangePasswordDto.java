@@ -7,7 +7,8 @@ import lombok.Data;
 @Data
 public class ChangePasswordDto {
 
-    private UUID id;
+
+    private String email;
 
     private String oldPassword;
 

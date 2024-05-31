@@ -1,3 +1,6 @@
+<app-password-change-warning [userId]="userId"></app-password-change-warning>
+
+<!-- Rest of the template -->
 <div class="container">
   <div class="main-body">
     <div class="row gutters-sm">
@@ -121,11 +124,17 @@
               </div>
             </div>
             <hr>
-            <div class="row">
-              <div class="col-sm-12">
-                <a class="btn btn-info" (click)="openUpdateUserDialog(currentUser.id)">Modifier</a>
-              </div>
-            </div>
+          <!-- Other existing content -->
+
+<div class="row">
+  <div class="col-sm-12">
+    <a class="btn btn-info" (click)="openUpdateUserDialog(currentUser.id)">Modifier</a>
+    <a class="btn btn-info" (click)="openPasswordUpdateDialog()">Modifier votre mot de passe</a>
+  </div>
+</div>
+
+<!-- Rest of the template -->
+
           </div>
         </div>
         
