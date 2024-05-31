@@ -4,6 +4,7 @@ import { AppeloffreService } from '../services/appeloffre.service';
 import { Location } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { Categorie } from '../model/categorie.model';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-addappeloffre',
@@ -27,6 +28,7 @@ export class AddappeloffreComponent implements OnInit {
 
   constructor(
     private appeloffreService: AppeloffreService,
+    private userService:UserService,
     private route: ActivatedRoute,
     private router: Router,
     private location: Location,
@@ -91,8 +93,11 @@ export class AddappeloffreComponent implements OnInit {
     this.appeloffreService.createAppelOffre(formData).subscribe({
       next: (response) => { 
         console.log('Offer created successfully', response);
+        console.log("ID APPELOFFRE", response.id);
+        console.log("ID CATEGORIE", this.newAppelOffre.categorieId); // Change from response.categorie.id to response.categorieId
+        this.createNotification(response.id, this.newAppelOffre.categorieId); // Pass the created AppelOffre ID to the notification creation method
         this.location.back();
-        this.toastr.success('Création terminé avec succées', "Appel d'offre", {
+        this.toastr.success('Création terminé avec succès', "Appel d'offre", {
           timeOut: 5000,
           closeButton: true,
           progressBar: true,
@@ -100,7 +105,7 @@ export class AddappeloffreComponent implements OnInit {
         });
       },
       error: (error) => {
-        this.toastr.error('Connexion echoué', "Appel d'offre", {
+        this.toastr.error('Connexion échouée', "Appel d'offre", {
           timeOut: 5000,
           closeButton: true,
           progressBar: true,
@@ -110,5 +115,25 @@ export class AddappeloffreComponent implements OnInit {
         alert('Failed to create the offer. Check console for details.');
       }
     });
-  }
+}
+
+createNotification(appelOffreId: string, id_categorie: string): void {
+    const notification = {
+        entreprise: { id: this.entrepriseId },
+        id_appeloffre: appelOffreId,
+        id_categorie: id_categorie
+    };
+
+    this.userService.addNotification(notification).subscribe({
+        next: (response) => {
+            console.log('Notification created successfully', response);
+        },
+        error: (error) => {
+            console.error('Error creating notification', error);
+        }
+    });
+}
+
+
+
 }

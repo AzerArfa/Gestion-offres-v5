@@ -1,0 +1,51 @@
+mat-dialog-content {
+    max-height: 400px; /* Limit the height of the content */
+    overflow-y: auto;  /* Enable scrolling if content exceeds max-height */
+    text-align: center; /* Center align the content */
+}
+
+img {
+    margin: 0 auto;
+}
+
+h2 {
+    margin-top: 10px;
+}
+
+p {
+    margin: 5px 0;
+}
+
+button.btn-outline-dark {
+    color: #279c9e;
+    border-color: #279c9e;
+    border-width: 1px;
+    background-color: transparent; /* Ensure background is transparent */
+    box-shadow: none; /* Remove any shadow */
+}
+
+button.btn-outline-dark:hover {
+    color: #ffffff;
+    background-color: #3bc0c3;
+    border-color: #3bc0c3;
+}
+
+button.mat-button {
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    border-radius: 4px;
+    min-width: 64px;
+}
+
+button.mat-button.mat-warn {
+    color: #ffffff;
+    background-color: #3bc0c3;
+    border-color: #3bc0c3;
+}
+
+button.mat-button.mat-warn:hover {
+    color: #ffffff;
+    background-color: #2b9a9e;
+    border-color: #2b9a9e;
+}

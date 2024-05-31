@@ -91,6 +91,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                         String requestPath = exchange.getRequest().getPath().toString();
                         boolean isAuthorized = roles.stream().anyMatch(role ->
                             (role.equals("ROLE_ADMIN") && (
+                                    requestPath.startsWith("/auth/notification") ||
                                 requestPath.startsWith("/offer/admin") ||
                                 requestPath.matches("/auth/approve-join-request/.*") ||
                                 requestPath.matches("/auth/reject-join-request/.*") ||
@@ -102,6 +103,8 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                             (role.equals("ROLE_USER") && requestPath.startsWith("/offer/user")||
                                     requestPath.matches("/auth/entreprise/.*")) ||
                             (role.equals("ROLE_SUPERADMIN") && (
+
+                                    requestPath.startsWith("/auth/download") ||
                                 requestPath.startsWith("/offer/superadmin") ||
                                 requestPath.equals("/auth/creation-requests") ||
                                 requestPath.matches("/auth/approve-request/.*") ||

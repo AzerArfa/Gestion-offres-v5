@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { Entreprise } from '../model/entreprise.model';
 import Swal from 'sweetalert2';
+import { UpdateappeloffreComponent } from '../updateappeloffre/updateappeloffre.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-appeloffresadmin',
@@ -17,7 +19,8 @@ export class AppeloffresadminComponent implements OnInit {
   entrepriseId: string | null = null;
   entreprise: Entreprise | null = null;
 
-  constructor(private userService: UserService, private appeloffreService: AppeloffreService, private route: ActivatedRoute) {}
+  constructor(private userService: UserService,
+    private dialog:MatDialog, private appeloffreService: AppeloffreService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -28,7 +31,19 @@ export class AppeloffresadminComponent implements OnInit {
       }
     });
   }
-
+  openUpdateAppelOffreDialog(appelOffreId: string): void {
+    const dialogRef = this.dialog.open(UpdateappeloffreComponent, {
+      width: '35vw', // Set the width to 80% of the viewport width
+      height: '75vh', // Set the height to 80% of the viewport height
+      data: { id: appelOffreId }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      console.log("dialogclosed");
+    });
+  }
+  
+  
   private loadEntreprise(id: string): void {
     this.userService.getEntrepriseById(id).subscribe({
       next: (entreprise) => {
@@ -56,12 +71,22 @@ export class AppeloffresadminComponent implements OnInit {
       if (result.isConfirmed) {
         this.appeloffreService.deleteAppelOffreAdmin(id).subscribe(() => {
           console.log('Appel doffre supprimé');
-          Swal.fire(
-            'Supprimé!',
-            'L\'appel d\'offre a été supprimé.',
-            'success'
-          );
-          this.getAppelOffresByEntreprise(this.entrepriseId!); // Reload the offers after successful deletion
+          this.userService.deleteNotificationsByAppelOffreId(id).subscribe(() => {
+            console.log('Notifications supprimées');
+            Swal.fire(
+              'Supprimé!',
+              'L\'appel d\'offre a été supprimé avec succès.',
+              'success'
+            );
+            this.getAppelOffresByEntreprise(this.entrepriseId!); // Reload the offers after successful deletion
+          }, (error) => {
+            console.warn('Error deleting notifications:', error); // Log as warning instead of error
+            Swal.fire(
+              'Erreur!',
+              'Une erreur s\'est produite lors de la suppression des notifications.',
+              'error'
+            );
+          });
         }, (error) => {
           console.warn('Error deleting appel d\'offre:', error); // Log as warning instead of error
           Swal.fire(
@@ -73,6 +98,7 @@ export class AppeloffresadminComponent implements OnInit {
       }
     });
   }
+  
 
   private getAppelOffresByEntreprise(entrepriseId: string): void {
     this.appeloffreService.getAppelOffresByEntrepriseId(entrepriseId).subscribe({

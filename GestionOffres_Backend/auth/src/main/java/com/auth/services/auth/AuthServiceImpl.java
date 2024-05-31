@@ -398,6 +398,7 @@ userDto.setRoles(roleDtos);
                     entrepriseDto.setVille(entreprise.getVille());
                     entrepriseDto.setSiegesociale(entreprise.getSiegesociale());
                     entrepriseDto.setLogo(entreprise.getLogo());
+                    entrepriseDto.setIdcategorie(entreprise.getIdcategorie());
                     return entrepriseDto;
                 })
                 .collect(Collectors.toList());

@@ -13,4 +13,5 @@ public interface EntrepriseService {
 	void deleteEntreprise(UUID entrepriseId);
     EntrepriseDto getEntrepriseById(UUID id);
     List<EntrepriseDto> getAllEntreprises();
+	Entreprise findById(UUID id);
 }

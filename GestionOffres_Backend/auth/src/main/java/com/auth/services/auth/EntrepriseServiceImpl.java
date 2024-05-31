@@ -23,7 +23,11 @@ public class EntrepriseServiceImpl implements EntrepriseService {
     private EntrepriseRepository entrepriseRepository;
     @Autowired
     private UserRepository userRepository;
-
+    @Override
+    @Transactional
+    public Entreprise findById(UUID id) {
+        return entrepriseRepository.findById(id).orElseThrow(() -> new RuntimeException("Entreprise not found with id: " + id));
+    }
     @Transactional
     @Override
     public Entreprise createEntreprise(EntrepriseDto entrepriseDto) {

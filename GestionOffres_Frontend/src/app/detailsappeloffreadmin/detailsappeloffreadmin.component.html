@@ -52,7 +52,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let offre of offres">
-            <td>{{ getEnterpriseName(offre.entrepriseid) }}</td>
+            <td><a [routerLink]="['/consulterentreprise', offre.entrepriseid]">{{ getEnterpriseName(offre.entrepriseid) }}</a></td>
             <td>{{ offre.numtel }}</td>
             <td>{{ offre.montant }} TND</td>
             <td>{{ offre.datededepot | date }}</td>

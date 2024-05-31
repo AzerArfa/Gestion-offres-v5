@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Notifications</h1>
+<div mat-dialog-content>
+  <div *ngFor="let notification of data.notifications">
+    <a [routerLink]="['/detailsAppelOffre', notification.id_appeloffre]" class="notification-link" (click)="closeDialog()">
+      <p><i class="fas fa-briefcase" ></i> {{notification.message}}</p>
+      <div class="small text-muted">{{ notification.creationDate | date:'short' }}</div>
+    </a>
+    <hr>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button class="btn btn-outline-dark btn-sm w-100" mat-button mat-dialog-close>Fermer</button>
+</div>

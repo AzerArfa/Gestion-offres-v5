@@ -91,6 +91,8 @@ export class UpdateEntrepriseComponent implements OnInit {
       );
     }
 
+    
+
     // Retrieve the user info from AuthService
     this.userInfo = this.authService.getUserInfo();
   }

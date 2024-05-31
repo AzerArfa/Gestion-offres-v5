@@ -10,11 +10,11 @@
 .navbar-brand {
   font-weight: bold;
   font-size: 1.5rem;
-  color: #1ec6b3;
+  color: #3bc0c3;
 }
 
 .navbar-brand:hover {
-  color: #00796b;
+  color: #004d40;
 }
 
 .nav-link {
@@ -24,7 +24,7 @@
 }
 
 .nav-link:hover {
-  color: #00796b;
+  color: #3bc0c3;
 }
 
 .navbar-toggler {
@@ -36,14 +36,16 @@
 }
 
 .btn-outline-dark {
-  color: #333333;
-  border-color: #333333;
+  color: #3bc0c3;
+  border-color: #3bc0c3;
+  
+  font-weight: 500;
 }
 
 .btn-outline-dark:hover {
   color: #ffffff;
-  background-color: #333333;
-  border-color: #333333;
+  background-color: #3bc0c3;
+  border-color: #3bc0c3;
 }
 
 .navbar-brand img {
@@ -66,7 +68,7 @@
 }
 
 .btn-notification .fa-bell {
-  color: #495057;
+  color: #3bc0c3;
   font-size: 20px;
 }
 
@@ -83,4 +85,36 @@
 
 .dropdown:hover .dropdown-menu {
   display: block;
+}
+
+.dropdown-item i {
+  margin-right: 10px;
+}
+
+.mx-3 {
+  margin-left: 1rem !important;
+  margin-right: 1rem !important;
+}
+
+.dropdown-item.button {
+  padding: 0.25rem 1rem;
+}
+
+.dropdown-divider {
+  margin: 0.5rem 0;
+}
+
+/* Adjust dropdown menu width */
+.dropdown-menu {
+  width: 300px;
+  max-width: none;
+}
+
+/* Ensure text wraps */
+.dropdown-item.text-wrap {
+  white-space: normal;
+}
+/* Add styles for the new "Voir tout" button */
+.dropdown-item.text-center {
+  cursor: pointer;
 }

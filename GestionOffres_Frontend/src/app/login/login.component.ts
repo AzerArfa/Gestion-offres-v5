@@ -22,13 +22,22 @@ export class LoginComponent {
         this.router.navigate(['/actionentreprise']); // Redirect to the users page after login
       },
       error => {
-        this.toastr.error("Le mot de passe ou l'e-mail sont erronés", 'Login', {
-          timeOut: 5000,
-          closeButton: true,
-          progressBar: true,
-          positionClass: 'toast-top-right',
-        });
         console.log('Login error:', error); // Log any login error
+        if (error.status === 403 && error.error === "Password update required") {
+          this.toastr.warning("Veuillez mettre à jour votre mot de passe.", 'Login', {
+            timeOut: 5000,
+            closeButton: true,
+            progressBar: true,
+            positionClass: 'toast-top-right',
+          });
+        } else {
+          this.toastr.error("Le mot de passe ou l'e-mail sont erronés", 'Login', {
+            timeOut: 5000,
+            closeButton: true,
+            progressBar: true,
+            positionClass: 'toast-top-right',
+          });
+        }
         this.err = 1;
       }
     );

@@ -36,10 +36,10 @@
                 <img class="card-img-top" [src]="appeloffre.img ? 'data:image/png;base64,' + appeloffre.img : 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg'" alt="appeloffre Image" />
                 <div class="card-body p-4">
                   <div class="text-center">
-                    <h3 class="fw-bolder">{{ appeloffre.titre }}</h3>
+                    <h2 class="fw-bolder">{{ appeloffre.titre }}</h2>
                     <p>{{ appeloffre.datecreation | date }}</p>
                     <p>{{ appeloffre.datelimitesoumission | date }}</p>
-                    <p style="font-weight: 500;">{{ appeloffre.localisation }}</p>
+                    <p style="font-weight: 600;">{{ appeloffre.localisation }}</p>
                   </div>
                 </div>
                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">

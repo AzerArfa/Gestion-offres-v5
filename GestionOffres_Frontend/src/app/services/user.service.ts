@@ -7,6 +7,7 @@ import { authApiURL } from '../config';
 import { Entreprise } from '../model/entreprise.model';
 import { DemandeAjoutEntreprise } from '../model/demandeajoutentreprise.model';
 import { DemandeRejoindreEntreprise } from '../model/demanderejoindreentreprise.model';
+import { Notification } from '../model/notification.model';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -163,5 +164,30 @@ rejectCreationRequest(requestId: string): Observable<any> {
 }
 
 
+addNotification(notification: any): Observable<any> {
+  return this.http.post<any>(`${authApiURL}/notification`, notification, { headers: this.getAuthHeaders() });
+}
+getNotifications(categorieId: string, entrepriseId: string): Observable<Notification[]> {
+  return this.http.get<Notification[]>(`${authApiURL}/notification/user`, {
+    params: {
+      categorieId,
+      entrepriseId
+    },
+    headers: this.getAuthHeaders()
+  });
+}
+getNotificationsByAppelOffreId(idAppelOffre: string): Observable<Notification[]> {
+  return this.http.get<Notification[]>(`${authApiURL}/notification/appeloffre/${idAppelOffre}`, {
+    headers: this.getAuthHeaders()
+  });
+}
+deleteNotificationsByAppelOffreId(idAppelOffre: string): Observable<void> {
+  return this.http.delete<void>(`${authApiURL}/notification/appeloffre/${idAppelOffre}`, {
+    headers: this.getAuthHeaders()
+  });
+}
 
+downloadDocument(url: string): Observable<Blob> {
+  return this.http.get(url, {  headers: this.getAuthHeaders(),responseType: 'blob' });
+}
 }

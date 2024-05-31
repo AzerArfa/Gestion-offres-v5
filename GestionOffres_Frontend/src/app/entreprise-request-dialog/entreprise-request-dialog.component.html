@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>Demande de création</h1>
+<div mat-dialog-content>
+  <div class="text-center">
+    <img [src]="data.demande.logo ? 'data:image/png;base64,' + data.demande.logo : 'https://bootdey.com/img/Content/avatar/avatar7.png'" alt="Entreprise Logo" class="rounded-circle" width="150">
+    <div class="mt-3">
+      <h2 class="entreprise-name">{{ data.demande.nom }}</h2>
+      <div class="entreprise-info">
+        <p><strong>Ville:</strong> {{ data.demande.ville }}</p>
+        <p><strong>Adresse:</strong> {{ data.demande.adresse }}</p>
+        <p><strong>Siège Sociale:</strong> {{ data.demande.siegesociale }}</p>
+        <p><strong>Code TVA:</strong> {{ data.demande.codeTVA }}</p>
+        <p><strong>Matricule:</strong> {{ data.demande.matricule }}</p>
+        <p><strong>Secteur d'activité:</strong> {{ data.demande.secteuractivite }}</p>
+      </div>
+      <div class="download-buttons">
+        <button (click)="downloadDocument('codetva', data.demande.id)" class="btn btn-download">
+          <i class="fas fa-download"></i> Télécharger Code TVA Document
+        </button>
+        <button (click)="downloadDocument('status', data.demande.id)" class="btn btn-download">
+          <i class="fas fa-download"></i> Télécharger Status Document
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button class="btn btn-outline-dark btn-sm w-100" mat-button (click)="onClose()">Fermer</button>
+</div>

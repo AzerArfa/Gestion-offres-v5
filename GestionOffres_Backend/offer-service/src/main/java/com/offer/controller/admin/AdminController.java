@@ -85,6 +85,8 @@ public class AdminController {
             }
 
             response.put("message", "Offer created successfully.");
+            response.put("id", createdOffer.getId().toString());
+            response.put("idcategorie", categorieId.toString());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             response.put("error", "Error creating offer: " + e.getMessage());
@@ -122,7 +124,8 @@ public class AdminController {
             @RequestParam(required = false) String localisation,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date datelimitesoumission,
             @RequestParam(required = false) MultipartFile img,
-            @RequestParam(required = false) MultipartFile document) {
+            @RequestParam(required = false) MultipartFile document,
+            @RequestParam(required = false) UUID categorieId) {
 
         Map<String, String> response = new HashMap<>();
         try {
@@ -140,6 +143,9 @@ public class AdminController {
             if (img != null && !img.isEmpty()) {
                 byte[] returnedImg = img.getBytes();
                 existingOffer.setImg(returnedImg);
+                System.out.println("Image file received: " + img.getOriginalFilename());
+            } else {
+                System.out.println("No image file received");
             }
 
             if (document != null && !document.isEmpty()) {
@@ -149,21 +155,46 @@ public class AdminController {
                 }
                 byte[] returnedDoc = document.getBytes();
                 existingOffer.setDocument(returnedDoc);
+                System.out.println("Document file received: " + document.getOriginalFilename());
+            } else {
+                System.out.println("No document file received");
             }
 
-            AppelOffre updatedOffer = adminService.updateAppelOffre(id,existingOffer);
+            // Handle the Categorie
+            if (categorieId != null) {
+                Optional<Categorie> optionalCategorie = categorieRepository.findById(categorieId);
+                if (optionalCategorie.isPresent()) {
+                    existingOffer.setCategorie(optionalCategorie.get());
+                } else {
+                    response.put("error", "Categorie not found.");
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+                }
+            }
+
+            // Log the offer before updating
+            System.out.println("Updating offer: " + existingOffer);
+
+            AppelOffre updatedOffer = adminService.updateAppelOffre(id, existingOffer);
             if (updatedOffer == null) {
                 response.put("error", "Failed to update offer.");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
             }
 
             response.put("message", "Offer updated successfully.");
+            
             return ResponseEntity.ok(response);
+        } catch (IllegalStateException e) {
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response); // Use 409 Conflict for logical issues
         } catch (Exception e) {
             response.put("error", "Error updating offer: " + e.getMessage());
+            e.printStackTrace(); // Print stack trace for detailed debugging
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
+
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<AppelOffre> getAppelOffreById(@PathVariable UUID id) {

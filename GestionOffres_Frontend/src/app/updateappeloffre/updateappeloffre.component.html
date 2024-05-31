@@ -6,34 +6,44 @@
   <title>Modifier Appel d'Offre</title>
 </head>
 <body>
-  <div class="full-screen-container">
-    <div class="form-container">
-      <h2>Modifier l'appel d'Offre</h2>
-      <form (ngSubmit)="updateAppelOffre()">
-        <div class="input-box image-preview" *ngIf="offreImagePreview"  (click)="openFileInput()">
-          <input type="file" (change)="onFileSelected($event)" name="img" class="form-control" style="opacity: 0;">
-          <img class="offre-image" [src]="offreImagePreview" alt="Offre Image">
-        </div>
-        <div class="input-box">
-          <input type="text" [(ngModel)]="currentAppelOffre.titre" name="titre" class="form-control" placeholder="Title">
-        </div>
-        <div class="input-box">
-          <input type="text" [(ngModel)]="currentAppelOffre.description" name="description" class="form-control" placeholder="Description">
-        </div>
-        <div class="input-box">
-          <input type="text" [(ngModel)]="currentAppelOffre.localisation" name="localisation" class="form-control" placeholder="Localisation">
-        </div>
-        <div class="input-box">
-          <input type="date" [(ngModel)]="datelimitesoumissionFormatted" name="datelimitesoumission" class="form-control" placeholder="Submission Deadline">
-        </div>
-        
-        <div class="input-box" [class.uploaded]="selectedDocument">
-          <input type="file" (change)="onDocumentSelected($event)" name="document" accept="application/pdf">
-          <span class="upload-status" *ngIf="selectedDocument">&#10004;</span>
-        </div>
-        
-        <button type="submit" class="btn">Modifier</button>
-      </form>
+  <div mat-dialog-content>
+    <div class="full-screen-container">
+      <div class="form-container">
+        <h2>Modifier l'appel d'Offre</h2>
+        <form (ngSubmit)="updateAppelOffre()">
+          <div class="input-box image-preview" *ngIf="offreImagePreview" (click)="openFileInput()">
+            <input type="file" (change)="onFileSelected($event)" name="img" class="form-control" style="opacity: 0;">
+            <img class="offre-image" [src]="offreImagePreview" alt="Offre Image">
+          </div>
+          <div class="input-box half-width">
+            <input type="text" [(ngModel)]="currentAppelOffre.titre" name="titre" class="form-control" placeholder="Title">
+          </div>
+          <div class="input-box half-width">
+            <select [(ngModel)]="selectedCategorieId" (change)="onCategorieChange($event)" name="categorie" class="form-control">
+              <option *ngFor="let categorie of categories" [value]="categorie.id" [selected]="categorie.id === currentAppelOffre.categorie.id">
+                {{ categorie.nomcategorie }}
+              </option>
+            </select>
+          </div>
+          <div class="input-box half-width">
+            <input type="text" [(ngModel)]="currentAppelOffre.localisation" name="localisation" class="form-control" placeholder="Localisation">
+          </div>
+          <div class="input-box half-width">
+            <input type="date" [(ngModel)]="datelimitesoumissionFormatted" name="datelimitesoumission" class="form-control" placeholder="Submission Deadline">
+          </div>
+          <div class="input-box">
+            <textarea [(ngModel)]="currentAppelOffre.description" name="description" class="form-control" placeholder="Description" rows="4"></textarea>
+          </div>
+          <div class="input-box" [class.uploaded]="selectedDocument">
+            <input type="file" (change)="onDocumentSelected($event)" name="document" accept="application/pdf">
+            <span class="upload-status" *ngIf="selectedDocument">&#10004;</span>
+          </div>
+          <div mat-dialog-actions>
+            <button style="margin-left: 8px; background-color: #26a69a; color: white" mat-raised-button type="submit">Modifier</button>
+            <button mat-raised-button color="warn" mat-dialog-close="">Annuler</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </body>

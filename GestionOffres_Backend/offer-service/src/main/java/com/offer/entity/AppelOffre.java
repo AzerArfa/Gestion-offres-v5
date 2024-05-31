@@ -6,10 +6,12 @@ import java.util.UUID;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
 @Table(name = "appeloffres")
+@ToString(exclude = {"offres"}) // Exclude the collection to prevent recursion
 public class AppelOffre {
     @Id
     @GeneratedValue(generator = "UUID")

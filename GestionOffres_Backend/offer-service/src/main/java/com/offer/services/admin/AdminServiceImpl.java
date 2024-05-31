@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -41,6 +43,10 @@ public class AdminServiceImpl implements AdminService {
 	        createCategoryIfNotExists("Marketing Digital et SEO", "Optimisation pour les moteurs de recherche (SEO), publicité payante (PPC), marketing sur les réseaux sociaux, et marketing de contenu.");
 	        createCategoryIfNotExists("Blockchain et Cryptomonnaie", "Développement blockchain, contrats intelligents, création de cryptomonnaies, et applications décentralisées (DApps).");
 	        createCategoryIfNotExists("IoT (Internet des Objets)", "Développement d'applications IoT, technologie portable, et solutions IoT pour améliorer la connectivité et l'automatisation.");
+	    }
+	 @Override
+	    public Optional<Categorie> getCategorieById(UUID id) {
+	        return categorieRepository.findById(id);
 	    }
 	  private void createCategoryIfNotExists(String name, String description) {
 	        List<Categorie> existingCategories = categorieRepository.findAll();
@@ -78,11 +84,20 @@ public class AdminServiceImpl implements AdminService {
         }
 
     }
-    public boolean canDeleteOrUpdateAppelOffre(UUID appelOffreId) {
+    public boolean canUpdateAppelOffre(UUID appelOffreId) {
         List<Offre> offres = offreRepository.findByAppeloffre_Id(appelOffreId);
-        return offres.isEmpty(); // Returns true if there are no offers, indicating delete/update is allowed
+        boolean canUpdate = offres.isEmpty();
+        System.out.println("canUpdateAppelOffre check for ID " + appelOffreId + ": " + canUpdate);
+        return canUpdate; // Returns true if there are no offers, indicating update is allowed
     }
-
+    public boolean canDeleteAppelOffre(UUID appelOffreId) {
+        AppelOffre appelOffre = appelOffreRepository.findById(appelOffreId)
+                .orElseThrow(() -> new IllegalArgumentException("AppelOffre not found"));
+        List<Offre> offres = offreRepository.findByAppeloffre_Id(appelOffreId);
+        boolean canDelete = (offres.isEmpty() && appelOffre.getDatelimitesoumission().after(new Date())) || appelOffre.getDatelimitesoumission().before(new Date());
+        System.out.println("canDeleteAppelOffre check for ID " + appelOffreId + ": " + canDelete);
+        return canDelete; // Returns true if there are no offers and the deadline hasn't passed, or if the deadline has passed
+    }
     @Override
     public List<Offre> getOffresByUserId(String userid) {
         return offreRepository.findByUserid(userid);
@@ -99,7 +114,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public AppelOffre updateAppelOffre(UUID appelOffreId, AppelOffre updatedAppelOffre) {
-        if (canDeleteOrUpdateAppelOffre(appelOffreId)) {
+        if (canUpdateAppelOffre(appelOffreId)) {
             return appelOffreRepository.save(updatedAppelOffre);
         } else {
             throw new IllegalStateException("Cannot update AppelOffre as there are related Offres");
@@ -107,7 +122,7 @@ public class AdminServiceImpl implements AdminService {
     }
     @Override
     public void deleteAppelOffre(UUID appelOffreId) {
-        if (canDeleteOrUpdateAppelOffre(appelOffreId)) {
+        if (canDeleteAppelOffre(appelOffreId)) {
             appelOffreRepository.deleteById(appelOffreId);
         } else {
             throw new IllegalStateException("Cannot delete AppelOffre as there are related Offres");

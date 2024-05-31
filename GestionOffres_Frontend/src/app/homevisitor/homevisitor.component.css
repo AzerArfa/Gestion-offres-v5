@@ -55,12 +55,13 @@ body {
 }
 
 .btn-outline-dark {
-  border-color: #333;
-  color: #333;
+  border-color: #3bc0c3;
+  color: #3bc0c3;
+  font-weight: 500;
 }
 
 .btn-outline-dark:hover {
-  background: #333;
+  background: #3bc0c3;
   color: #ffffff;
 }
 

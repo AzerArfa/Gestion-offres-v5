@@ -12,6 +12,8 @@ import com.auth.dto.SignupRequest;
 import com.auth.dto.UserDto;
 import com.auth.entity.DemandeAjoutEntreprise;
 import com.auth.entity.DemandeRejoindreEntreprise;
+import com.auth.entity.Entreprise;
+import com.auth.entity.Notification;
 import com.auth.entity.Role;
 import com.auth.entity.User;
 import com.auth.exceptions.UserNotFoundException;
@@ -20,6 +22,7 @@ import com.auth.services.auth.AuthService;
 import com.auth.services.auth.DemandeAjoutService;
 import com.auth.services.auth.DemandeRejointService;
 import com.auth.services.auth.EntrepriseService;
+import com.auth.services.auth.NotificationService;
 import com.auth.services.auth.RoleService;
 import com.auth.services.jwt.UserDetailsServiceImpl;
 import com.auth.utils.JwtUtil;
@@ -30,6 +33,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,6 +54,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
+	@Autowired
+    private final NotificationService notificationService;
 	@Autowired
     private EntrepriseService entrepriseService;
 	  private final AuthenticationManager authenticationManager;
@@ -530,6 +536,42 @@ JSONObject jsonResponse = new JSONObject();
 	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 	        }
 	    }
+	  @GetMapping("/download/codetva/{id}")
+public ResponseEntity<byte[]> downloadCodeTVADocument(@PathVariable UUID id) {
+    Optional<DemandeAjoutEntreprise> demandeOptional = entrepriseRequestService.getRequestById(id);
+    if (demandeOptional.isPresent()) {
+        DemandeAjoutEntreprise demande = demandeOptional.get();
+        if (demande.getCodetvadocument() != null) {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"CodeTVA_" + id.toString() + ".pdf\"")
+                    .body(demande.getCodetvadocument());
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    } else {
+        return ResponseEntity.notFound().build();
+    }
+}
+
+@GetMapping("/download/status/{id}")
+public ResponseEntity<byte[]> downloadStatusDocument(@PathVariable UUID id) {
+    Optional<DemandeAjoutEntreprise> demandeOptional = entrepriseRequestService.getRequestById(id);
+    if (demandeOptional.isPresent()) {
+        DemandeAjoutEntreprise demande = demandeOptional.get();
+        if (demande.getStatus() != null) {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"Status_" + id.toString() + ".pdf\"")
+                    .body(demande.getStatus());
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    } else {
+        return ResponseEntity.notFound().build();
+    }
+}
+
 	    @PostMapping("/rejectrequest/{id}")
 	    public ResponseEntity<Void> rejectRequest(@PathVariable UUID id) {
 	    	entrepriseRequestService.rejectRequest(id);
@@ -590,5 +632,37 @@ JSONObject jsonResponse = new JSONObject();
 	        List<DemandeAjoutEntreprise> creationRequests = entrepriseRequestService.getAllPendingRequests();
 	        return ResponseEntity.ok(creationRequests);
 	    }
-
+  //Notificationsssssssss
+	    
+	    @PostMapping("/notification")
+	    public ResponseEntity<Notification> addNotification(@RequestBody Notification notification) {
+	        // Ensure the entreprise is set
+	        Entreprise entreprise = entrepriseService.findById(notification.getEntreprise().getId());
+	        if (entreprise != null) {
+	            notification.setEntreprise(entreprise);
+	        }
+	        
+	        Notification createdNotification = notificationService.addNotification(notification);
+	        return ResponseEntity.status(201).body(createdNotification);
+	    }
+	    @DeleteMapping("/notification/appeloffre/{idAppelOffre}")
+	    public void deleteNotificationsByAppelOffreId(@PathVariable UUID idAppelOffre) {
+	        notificationService.deleteNotificationsByAppelOffreId(idAppelOffre);
+	    }
+	    @DeleteMapping("/notification/{id}")
+	    public ResponseEntity<Void> deleteNotification(@PathVariable UUID id) {
+	        notificationService.deleteNotification(id);
+	        return ResponseEntity.noContent().build();
+	    }
+	    @GetMapping("/notification/user")
+	    public ResponseEntity<List<Notification>> getNotificationsByCategorieIdAndNotEntrepriseId(
+	            @RequestParam UUID categorieId,
+	            @RequestParam UUID entrepriseId) {
+	        List<Notification> notifications = notificationService.getNotificationsByCategorieIdAndNotEntrepriseId(categorieId, entrepriseId);
+	        return ResponseEntity.ok(notifications);
+	    }
+	    @GetMapping("/notification/appeloffre/{idAppelOffre}")
+	    public List<Notification> getNotificationsByAppelOffreId(@PathVariable UUID idAppelOffre) {
+	        return notificationService.getNotificationsByAppelOffreId(idAppelOffre);
+	    }
 }

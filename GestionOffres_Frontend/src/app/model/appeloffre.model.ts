@@ -10,5 +10,6 @@ localisation!:string;          // ID of the company related to the offer
     datelimitesoumission!: Date;     // Deadline for submission
     img!: string;                    // Image for the offer, base64 encoded string
     document!: string;    
-    categorie!: Categorie;           // PDF document for the offer, base64 encoded string
+    categorie!:Categorie;       // PDF document for the offer, base64 encoded string
+    
 }

@@ -40,7 +40,7 @@
                                 <h3 class="fw-bolder">{{ appeloffre.titre }}</h3>
                                 <p>{{ appeloffre.datelimitesoumission | date }}</p>
                                 <div>
-                                    <a class="table-link" [routerLink]="['/updateappeloffre', appeloffre.id]">
+                                    <a class="table-link" (click)="openUpdateAppelOffreDialog(appeloffre.id)">
                                         <span class="fa-stack" style="color: green;">
                                             <i class="fa fa-square fa-stack-2x"></i>
                                             <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>

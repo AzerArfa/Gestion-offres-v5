@@ -1,0 +1,40 @@
+mat-dialog-content {
+    max-height: 400px; /* Limit the height of the content */
+    overflow-y: auto;  /* Enable scrolling if content exceeds max-height */
+  }
+  
+  p {
+    margin: 0;
+  }
+  
+  hr {
+    margin: 10px 0;
+  }
+  
+  .btn-outline-dark {
+    color: #279c9e;
+    border-color: #279c9e;
+  }
+  
+  .btn-outline-dark:hover {
+    color: #ffffff;
+    background-color: #3bc0c3;
+    border-color: #3bc0c3;
+  }
+  
+  .notification-link {
+    text-decoration: none;
+    color: rgb(42, 37, 37);
+    display: block; /* Ensure the entire area is clickable */
+  }
+  
+  .notification-link:hover {
+    background-color: #f1f1f1;
+    color: #3bc0c3; /* Change the text color on hover to match the theme */
+  }
+  
+  .notification-link p,
+  .notification-link .small {
+    margin: 0; /* Remove margins for better alignment */
+  }
+  

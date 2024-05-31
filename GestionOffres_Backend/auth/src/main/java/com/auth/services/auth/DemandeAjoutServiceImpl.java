@@ -31,7 +31,10 @@ public class DemandeAjoutServiceImpl implements DemandeAjoutService {
 	        throw new IllegalArgumentException("An enterprise with the same matricule already exists");
 	    }
 	}
-
+	   @Override
+	    public Optional<DemandeAjoutEntreprise> getRequestById(UUID id) {
+	        return repository.findById(id);
+	    }
     @Override
     public List<DemandeAjoutEntreprise> getAllPendingRequests() {
         return repository.findAll();

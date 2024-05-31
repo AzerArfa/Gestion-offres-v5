@@ -3,6 +3,7 @@ import { User } from '../model/user.model';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-sign-up',
@@ -64,6 +65,13 @@ export class SignUpComponent {
     }
 
     this.userService.signup(formData).subscribe(response => {
+      Swal.fire("Votre compte a été créé avec succès");
+      this.toastr.success("Inscription réussie.", 'Signup', {
+        timeOut: 5000,
+        closeButton: true,
+        progressBar: true,
+        positionClass: 'toast-top-right',
+      });      
       console.log('User signed up successfully', response);
       this.router.navigate(['/login']);
     }, error => {

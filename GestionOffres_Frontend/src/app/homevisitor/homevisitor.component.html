@@ -41,13 +41,13 @@
                         <div class="card-body p-4">
                             <div class="text-center">
                                 <!-- appeloffre title-->
-                                <h3 class="fw-bolder">{{ appeloffre.titre }}</h3>
+                                <h2 class="fw-bolder">{{ appeloffre.titre }}</h2>
                                 <!-- appeloffre description-->
                                
                                 <!-- appeloffre date-->
                                 <p>{{ appeloffre.datecreation | date }}</p>
                                 <p>{{ appeloffre.datelimitesoumission | date }}</p>
-                                <p>{{ appeloffre.localisation}}</p>
+                                <p style="font-weight: 600;">{{ appeloffre.localisation}}</p>
                             </div>
                         </div>
                        
@@ -56,7 +56,6 @@
             </div>
         </div>
     </section>
-    <!-- Footer (ensure you have an app-footer component or adjust as needed) -->
-    <app-footer></app-footer>
+    
 </body>
 </html>

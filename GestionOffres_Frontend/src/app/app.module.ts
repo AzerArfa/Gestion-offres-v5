@@ -41,7 +41,14 @@ import { ToastrModule } from 'ngx-toastr';
 import { GestioncategoriesComponent } from './gestioncategories/gestioncategories.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 
+import { MatListModule } from '@angular/material/list';
+import { MatBadgeModule } from '@angular/material/badge';
+import { ConsulterentrepriseComponent } from './consulterentreprise/consulterentreprise.component';
+import { NotificationslistdialogComponent } from './notificationslistdialog/notificationslistdialog.component';
+import { RequestDialogComponent } from './request-dialog/request-dialog.component';
+import { EntrepriseRequestDialogComponent } from './entreprise-request-dialog/entreprise-request-dialog.component';
 
 
 @NgModule({
@@ -72,7 +79,11 @@ import {MatIconModule} from '@angular/material/icon';
     DemanderejointentrepriseComponent,
     HomevisitorComponent,
     ListentreprisesComponent,
-    GestioncategoriesComponent
+    GestioncategoriesComponent,
+    ConsulterentrepriseComponent,
+    NotificationslistdialogComponent,
+    RequestDialogComponent,
+    EntrepriseRequestDialogComponent
     
   ],
   imports: [ToastrModule.forRoot({
@@ -80,6 +91,9 @@ import {MatIconModule} from '@angular/material/icon';
     positionClass: 'toast-bottom-right',
     preventDuplicates: true,
   }),
+  
+  MatMenuModule,
+  MatBadgeModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
@@ -89,6 +103,7 @@ import {MatIconModule} from '@angular/material/icon';
     MatDialogModule,
     MatSnackBarModule,
     MatButtonModule,
+     MatListModule,
     MatIconModule
   ],
   providers: [

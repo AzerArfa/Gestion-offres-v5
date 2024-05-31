@@ -36,4 +36,6 @@ public interface AdminService {
 	List<Categorie> getAllCategories();
 
 	List<AppelOffre> getAppelOffresByCategorieId(UUID categorieId);
+	Optional<Categorie> getCategorieById(UUID id);
+
 }

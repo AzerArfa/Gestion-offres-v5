@@ -11,6 +11,8 @@ import Swal from 'sweetalert2';
 import { UpdateEntrepriseComponent } from '../update-entreprise/update-entreprise.component';
 import { UpdateUserComponent } from '../update-user/update-user.component';
 import { MatDialog } from '@angular/material/dialog';
+import { RequestDialogComponent } from '../request-dialog/request-dialog.component';
+import { EntrepriseRequestDialogComponent } from '../entreprise-request-dialog/entreprise-request-dialog.component';
 
 @Component({
   selector: 'app-profile',
@@ -58,7 +60,16 @@ export class ProfileComponent implements OnInit {
       error: (err) => console.error('Failed to get user ID:', err)
     });
   }
-  
+  openRequestDialog(request: any): void {
+    const dialogRef = this.dialog.open(RequestDialogComponent, {
+      width: '400px',
+      data: { user: request }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
   sortList(): void {
     if (this.sortOption === 'entreprises') {
       this.sortedList = [
@@ -219,7 +230,9 @@ export class ProfileComponent implements OnInit {
         this.joinRequests.forEach(request => {
           this.userService.getUserById(request.userId).subscribe(user => {
             request.userName = user.name;
-            request.userCIN = user.cin;
+            request.userPrenom = user.prenom;
+            request.userDatenais = user.datenais;
+            request.userLieunais = user.lieunais;
             request.userImg = user.img;
           });
         });
@@ -227,6 +240,7 @@ export class ProfileComponent implements OnInit {
       error: (err) => console.error('Failed to fetch join requests:', err)
     });
   }
+  
 
   loadCurrentUser(userId: string): void {
     this.userService.getUserById(userId).subscribe({
@@ -281,7 +295,17 @@ export class ProfileComponent implements OnInit {
       this.deleteEntreprise(id);
     }
   }
-
+  openCreationRequestDialog(request: DemandeAjoutEntreprise): void {
+    const dialogRef = this.dialog.open(EntrepriseRequestDialogComponent, {
+      width: '400px',
+      data: { demande: request }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+  
   deleteEntreprise(id: string): void {
     Swal.fire({
       title: 'Êtes-vous sûr?',

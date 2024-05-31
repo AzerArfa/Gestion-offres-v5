@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
+import { NotificationService } from './services/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +23,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.router.navigate(['/login']);
     } */
   }
+
 
   ngAfterViewInit(): void {
     this.router.events.subscribe(event => {

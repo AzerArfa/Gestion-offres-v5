@@ -1,0 +1,60 @@
+mat-dialog-content {
+    max-height: 400px;
+    overflow-y: auto;
+    text-align: center;
+}
+
+img {
+    margin: 0 auto;
+    border: 2px solid #279c9e;
+    padding: 5px;
+}
+
+.entreprise-name {
+    margin-top: 10px;
+    font-size: 1.5rem;
+    color: #279c9e;
+}
+
+.entreprise-info p {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+.download-buttons {
+    margin-top: 15px;
+}
+
+.btn-download {
+    display: inline-flex;
+    align-items: center;
+    background-color: #279c9e;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    font-size: 0.875rem;
+    border-radius: 5px;
+    margin: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-download i {
+    margin-right: 8px;
+}
+
+.btn-download:hover {
+    background-color: #3bc0c3;
+}
+
+button.btn-outline-dark {
+    color: #279c9e;
+    border-color: #279c9e;
+}
+
+button.btn-outline-dark:hover {
+    color: #ffffff;
+    background-color: #3bc0c3;
+    border-color: #3bc0c3;
+}

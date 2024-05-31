@@ -1,6 +1,7 @@
 package com.auth.services.auth;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -15,4 +16,5 @@ public interface DemandeAjoutService {
 	    void rejectRequest(UUID requestId);
 		void deleteRequest(UUID requestId);
 		 List<DemandeAjoutEntreprise> getRequestsByUserId(UUID userId);
+		 Optional<DemandeAjoutEntreprise> getRequestById(UUID id);
 }
