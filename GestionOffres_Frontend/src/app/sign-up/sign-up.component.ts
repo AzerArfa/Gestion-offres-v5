@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { User } from '../model/user.model';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
@@ -10,8 +10,8 @@ import Swal from 'sweetalert2';
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.css']
 })
-export class SignUpComponent {
-  
+export class SignUpComponent implements OnInit{
+  isSubmitting:boolean=false;
   newUser: User = new User();
   selectedFile: File | null = null;  // Allow null as a valid value
   confirmPassword: string = '';
@@ -19,7 +19,9 @@ export class SignUpComponent {
   imagePreview: string | ArrayBuffer | null = null;
 
   constructor(private userService: UserService, private router: Router, private toastr: ToastrService) { }
-
+ngOnInit(): void {
+  this.resetForm();
+}
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0];
     if (this.selectedFile) {
@@ -40,6 +42,10 @@ export class SignUpComponent {
   }
 
   onSubmit(): void {
+    if (this.isSubmitting) {
+      return; // Prevent duplicate form submission
+    }
+
     if (this.confirmPassword !== this.newUser.password) {
       this.toastr.error('Les mots de passe ne correspondent pas!', 'Sign up', {
         timeOut: 5000,
@@ -47,8 +53,13 @@ export class SignUpComponent {
         progressBar: true,
         positionClass: 'toast-top-right',
       });
-      return;
+      return; // Password confirmation check
     }
+
+    // Additional form validation checks
+
+    this.isSubmitting = true; // Set submitting flag to true
+
     const formData: FormData = new FormData();
     formData.append('cin', this.newUser.cin);
     formData.append('email', this.newUser.email);
@@ -71,6 +82,7 @@ export class SignUpComponent {
       });      
       console.log('User signed up successfully', response);
       this.router.navigate(['/login']);
+      this.resetForm(); // Reset form state
     }, error => {
       this.toastr.error('Enregistrement échoué', 'Sign up', {
         timeOut: 5000,
@@ -79,9 +91,17 @@ export class SignUpComponent {
         positionClass: 'toast-top-right',
       });
       console.error('Error signing up user', error);
+      this.isSubmitting = false; // Reset submitting flag
     });
   }
-  
+  resetForm(): void {
+    this.newUser = new User();
+    this.selectedFile = null;
+    this.confirmPassword = '';
+    this.captcha = false;
+    this.imagePreview = null;
+    this.isSubmitting = false;
+  }
 
   formatDate(date: Date): string {
     const year = date.getFullYear();

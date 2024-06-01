@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { authApiURL } from '../config';
@@ -45,7 +45,8 @@ isAuthenticated(): boolean {
   return !!token; // Example condition
 }
 verifyEmail(token: string): Observable<any> {
-  return this.http.get(`${authApiURL}/verify`, { params: { token }, responseType: 'text' });
+  let params = new HttpParams().set('token', token);
+  return this.http.get(`${authApiURL}/verify`, { params, responseType: 'text' });
 }
   login(user: any): Observable<HttpResponse<any>> {
     return this.http.post<any>(`${authApiURL}/login`, user, { observe: 'response' }).pipe(

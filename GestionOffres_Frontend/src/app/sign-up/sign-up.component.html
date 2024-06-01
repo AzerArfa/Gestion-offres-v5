@@ -46,11 +46,8 @@
 
           <button type="submit" class="btn btn-success" [disabled]="!signUpForm.valid || !captcha || !selectedFile">Sign Up</button>
           <div class="form-footer">
-            <div class="forgot-password">
-              <a href="#">Forgot Password?</a>
-            </div>
             <div class="account-signin">
-              <p>Already have an account? <a href="/login">Sign In</a></p>
+              <p>Already have an account? <a routerLink="/login">Sign In</a></p>
             </div>
           </div>
         </form>

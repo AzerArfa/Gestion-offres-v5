@@ -38,4 +38,8 @@ public interface AuthService {
 
 
 	int getRemainingDaysForPasswordChange(User user);
+
+	String generateVerificationToken();
+
+	void sendVerificationEmail(User user);
 }

@@ -55,6 +55,8 @@ import { EntrepriseRequestDialogComponent } from './entreprise-request-dialog/en
 import { PasswordChangeWarningComponent } from './password-change-warning/password-change-warning.component';
 import { PasswordUpdateDialogComponent } from './password-update-dialog/password-update-dialog.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 
 @NgModule({
@@ -92,7 +94,9 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
     EntrepriseRequestDialogComponent,
     PasswordChangeWarningComponent,
     PasswordUpdateDialogComponent,
-    VerifyEmailComponent
+    VerifyEmailComponent,
+    ResetPasswordComponent,
+    ChangePasswordComponent
     
   ],
   imports: [ToastrModule.forRoot({

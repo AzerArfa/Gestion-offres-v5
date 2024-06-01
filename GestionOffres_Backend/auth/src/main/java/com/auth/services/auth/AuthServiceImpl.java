@@ -103,77 +103,79 @@ userDto.setRoles(roleDtos);
         userRepository.deleteById(userId);
         return true;
     }
+   @Transactional
+public UserDto createUser(SignupRequest signupRequest) {
+    Password initialPassword = new Password();
 
-    @Transactional
-    public UserDto createUser(SignupRequest signupRequest) {
-        Password initialPassword = new Password();
+    // Email validation
+    String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    Pattern pattern = Pattern.compile(emailRegex);
+    Matcher matcher = pattern.matcher(signupRequest.getEmail());
 
-        // Email validation
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        Matcher matcher = pattern.matcher(signupRequest.getEmail());
-
-        if (!matcher.matches()) {
-            throw new IllegalArgumentException("Invalid email format");
-        }
-
-        // Check if email already exists
-        if (userRepository.existsByEmail(signupRequest.getEmail())) {
-            throw new IllegalArgumentException("Email already exists");
-        }
-
-        // CIN validation
-        String cin = signupRequest.getCin();
-        if (cin == null || !cin.matches("\\d{8}")) {
-            throw new IllegalArgumentException("CIN must be exactly 8 digits");
-        }
-
-        // Password length validation
-        String password = signupRequest.getPassword();
-        if (password == null || password.length() < 8) {
-            throw new IllegalArgumentException("Password must be exactly 8 characters long");
-        }
-
-        // Date of birth validation
-        Date datenais = signupRequest.getDatenais();
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.YEAR, -18);
-        Date cutoffDate = calendar.getTime();
-        if (datenais == null || !datenais.before(cutoffDate)) {
-            throw new IllegalArgumentException("User must be older than 18 years");
-        }
-
-        User user = new User();
-        user.setEmail(signupRequest.getEmail());
-        user.setName(signupRequest.getName());
-        user.setPrenom(signupRequest.getPrenom());
-        user.setImg(signupRequest.getImg());
-        user.setCin(signupRequest.getCin());
-        user.setDatenais(signupRequest.getDatenais());
-        user.setLieunais(signupRequest.getLieunais());
-        user.setEmailVerificationToken(generateVerificationToken());
-        user.setEmailVerified(false);
-        initialPassword.setPassword(new BCryptPasswordEncoder().encode(signupRequest.getPassword()));
-        initialPassword.setCreationDate(new Date());
-        initialPassword.setUser(user);
-        user.setPasswords(Collections.singletonList(initialPassword));  // Set the password as a list containing one element
-
-        Role userRole = roleRepository.findByName("ROLE_USER");
-        if (userRole == null) {
-            userRole = new Role();
-            userRole.setName("ROLE_USER");
-            roleRepository.save(userRole);
-        }
-        user.getRoles().add(userRole);
-        User createdUser = userRepository.save(user);
-        sendVerificationEmail(user);
-        passwordRepository.save(initialPassword);
-        return createdUser.getUserDto();
+    if (!matcher.matches()) {
+        throw new IllegalArgumentException("Invalid email format");
     }
-    private String generateVerificationToken() {
+
+    // Check if email already exists
+    if (userRepository.existsByEmail(signupRequest.getEmail())) {
+        throw new IllegalArgumentException("Email already exists");
+    }
+
+    // CIN validation
+    String cin = signupRequest.getCin();
+    if (cin == null || !cin.matches("\\d{8}")) {
+        throw new IllegalArgumentException("CIN must be exactly 8 digits");
+    }
+
+    // Password length validation
+    String password = signupRequest.getPassword();
+    if (password == null || password.length() < 8) {
+        throw new IllegalArgumentException("Password must be exactly 8 characters long");
+    }
+
+    // Date of birth validation
+    Date datenais = signupRequest.getDatenais();
+    Calendar calendar = Calendar.getInstance();
+    calendar.add(Calendar.YEAR, -18);
+    Date cutoffDate = calendar.getTime();
+    if (datenais == null || !datenais.before(cutoffDate)) {
+        throw new IllegalArgumentException("User must be older than 18 years");
+    }
+
+    User user = new User();
+    user.setEmail(signupRequest.getEmail());
+    user.setName(signupRequest.getName());
+    user.setPrenom(signupRequest.getPrenom());
+    user.setImg(signupRequest.getImg());
+    user.setCin(signupRequest.getCin());
+    user.setDatenais(signupRequest.getDatenais());
+    user.setLieunais(signupRequest.getLieunais());
+    user.setEmailVerificationToken(generateVerificationToken());
+    user.setTokenCreationDate(new Date());
+    user.setEmailVerified(false);
+    initialPassword.setPassword(new BCryptPasswordEncoder().encode(signupRequest.getPassword()));
+    initialPassword.setCreationDate(new Date());
+    initialPassword.setUser(user);
+    user.setPasswords(Collections.singletonList(initialPassword));  // Set the password as a list containing one element
+
+    Role userRole = roleRepository.findByName("ROLE_USER");
+    if (userRole == null) {
+        userRole = new Role();
+        userRole.setName("ROLE_USER");
+        roleRepository.save(userRole);
+    }
+    user.getRoles().add(userRole);
+    User createdUser = userRepository.save(user);
+    sendVerificationEmail(user);
+    passwordRepository.save(initialPassword);
+    return createdUser.getUserDto();
+}
+   @Override
+ public String generateVerificationToken() {
         return UUID.randomUUID().toString();
     }
-    private void sendVerificationEmail(User user) {
+   @Override
+    public void sendVerificationEmail(User user) {
         String to = user.getEmail();
         String subject = "Vérification de l'e-mail";
         String body =  "<a href=\"http://localhost:4200/login?token=" + user.getEmailVerificationToken() + "\">Cliquer ici pour verifier votre adresse email.</a>";

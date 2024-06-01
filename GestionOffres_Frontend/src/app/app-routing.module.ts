@@ -29,6 +29,8 @@ import { GestioncategoriesComponent } from './gestioncategories/gestioncategorie
 import { AdminGuard } from './guards/admin.guard';
 import { ConsulterentrepriseComponent } from './consulterentreprise/consulterentreprise.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 
 
@@ -54,6 +56,8 @@ const routes: Routes = [
   { path: 'navbar', component: NavbarComponent } ,
   {path:"login", component:LoginComponent},
   {path:"signUp",component:SignUpComponent},
+  {path:"changepassword",component:ChangePasswordComponent},
+  {path:"resetpassword",component:ResetPasswordComponent},
   {path:"listentreprises",component:ListentreprisesComponent},
   {path:"forbidden",component:ForbiddenComponent},
   {path:"about", component:AboutComponent},

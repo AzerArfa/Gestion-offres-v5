@@ -73,54 +73,100 @@ public class AuthController {
 	  private DemandeAjoutService entrepriseRequestService;
 	  @Autowired 
 	  private DemandeRejointService joinRequestService;
-	  @PostMapping("/login")
+	 
+	@PostMapping("/login")
+
 	  public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response) {
+
 	      try {
+
 	          authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword()));
+
 	      } catch (BadCredentialsException e) {
+
 	          return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect username or password");
+
 	      }
+
+
 
 	      final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
+
 	      Optional<User> optionalUser = userRepository.findFirstByEmail(authenticationRequest.getEmail());
+
 	      if (optionalUser.isPresent()) {
+
 	          User user = optionalUser.get();
-	          if (authService.checkIfPasswordNeedsUpdate(user)) {
-	              return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Password update required");
+
+	          if (!user.isEmailVerified()) {
+
+	              return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Email not verified");
+
 	          }
+
+
+
+	          if (authService.checkIfPasswordNeedsUpdate(user)) {
+
+	              return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Password update required");
+
+	          }
+
+
 
 	          List<String> roles = user.getRoles().stream().map(Role::getName).collect(Collectors.toList());
+
 	          final String jwt = jwtUtil.generateToken(user.getEmail(), roles);
 
+
+
 	          // Set JWT to the response header
+
 	          response.setHeader("Authorization", "Bearer " + jwt);
 
+
+
 	          try {
+
 	              // Convert byte array to Base64 string, handle null image
-	        	  String base64Image = null;
-	        	  if (user.getImg() != null) {
-	        	      base64Image = Base64.getEncoder().encodeToString(user.getImg());
-	        	      System.out.println("Base64 Image: " + base64Image); // Log the Base64 string
-	        	  } else {
-	        	      System.out.println("User image is null");
-	        	  }
-JSONObject jsonResponse = new JSONObject();
+
+	              String base64Image = null;
+
+	              if (user.getImg() != null) {
+
+	                  base64Image = Base64.getEncoder().encodeToString(user.getImg());
+
+	              }
+
+
+
+	              JSONObject jsonResponse = new JSONObject();
+
 	              jsonResponse.put("jwt", jwt); 
+
 	              jsonResponse.put("userId", user.getId());
+
 	              jsonResponse.put("roles", roles);
+
 	              jsonResponse.put("userImage", base64Image); // Send Base64 string
 
+
+
 	              return ResponseEntity.ok().headers(new HttpHeaders()).body(jsonResponse.toString());
+
 	          } catch (JSONException e) {
+
 	              return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating JSON response");
+
 	          }
+
 	      } else {
+
 	          return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+
 	      }
+
 	  }
-
-
-
 
 
 	  @PostMapping(value = "/signup", consumes = "multipart/form-data")
@@ -540,12 +586,26 @@ JSONObject jsonResponse = new JSONObject();
 	            return ResponseEntity.badRequest().body("Invalid token");
 	        }
 
+	        Date now = new Date();
+	        long differenceInMillis = now.getTime() - user.getTokenCreationDate().getTime();
+	        long differenceInMinutes = differenceInMillis / (60 * 1000);
+
+	        if (differenceInMinutes > 30) {
+	            // Token expired
+	            user.setEmailVerificationToken(authService.generateVerificationToken());
+	            user.setTokenCreationDate(new Date());
+	            userRepository.save(user);
+	            authService.sendVerificationEmail(user);
+	            return ResponseEntity.badRequest().body("Token expired. A new verification email has been sent.");
+	        }
+
 	        user.setEmailVerified(true);
 	        user.setEmailVerificationToken(null); // clear the token
 	        userRepository.save(user);
 
 	        return ResponseEntity.ok("Email verified successfully");
 	    }
+
 	  @GetMapping("/download/codetva/{id}")
 public ResponseEntity<byte[]> downloadCodeTVADocument(@PathVariable UUID id) {
     Optional<DemandeAjoutEntreprise> demandeOptional = entrepriseRequestService.getRequestById(id);

@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,
-    private toastr:ToastrService,
+    private toastr: ToastrService,
     private router: Router
   ) {}
 
@@ -31,18 +31,40 @@ export class LoginComponent implements OnInit {
             icon: 'success',
             title: 'Verification',
             text: this.message,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
             showConfirmButton: true,
             timer: 5000
+          }).then(() => {
+            // Remove the token from the query params after displaying the message
+            this.router.navigate([], {
+              relativeTo: this.activatedRoute,
+              queryParams: { token: null },
+              queryParamsHandling: 'merge' // Merge with existing query params
+            });
           });
         },
         error => {
-          this.message = "La vérification de l'e-mail a échoué. Veuillez réessayer.";
+          const errorMessage = error.error; // This should now contain the actual error message from the backend
+          if (error.status === 400 && errorMessage === "Token expired. A new verification email has been sent.") {
+            this.message = "Le lien de vérification a expiré. Un nouveau lien a été envoyé.";
+          } else {
+            this.message = "La vérification de l'e-mail a échoué. Veuillez réessayer.";
+          }
           Swal.fire({
             icon: 'error',
             title: 'Verification',
             text: this.message,
-            showConfirmButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
             timer: 5000
+          }).then(() => {
+            // Remove the token from the query params after displaying the message
+            this.router.navigate([], {
+              relativeTo: this.activatedRoute,
+              queryParams: { token: null },
+              queryParamsHandling: 'merge' // Merge with existing query params
+            });
           });
         }
       );
@@ -58,7 +80,17 @@ export class LoginComponent implements OnInit {
       },
       error => {
         console.log('Login error:', error); // Log any login error
-        if (error.status === 403 && error.error === "Password update required") {
+        if (error.status === 403 && error.error === "Email not verified") {
+          Swal.fire({
+            icon: 'warning',
+            title: 'E-mail non vérifié',
+            text: "Vous devez vérifier votre compte avant de pouvoir vous connecter.",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: true,
+            timer: 5000
+          });
+        } else if (error.status === 403 && error.error === "Password update required") {
           this.toastr.warning("Veuillez mettre à jour votre mot de passe.", 'Login', {
             timeOut: 5000,
             closeButton: true,
