@@ -54,19 +54,16 @@ export class SignUpComponent {
     formData.append('email', this.newUser.email);
     formData.append('name', this.newUser.name);
     formData.append('prenom', this.newUser.prenom);
-    // Format the date properly
     const formattedDate = this.formatDate(new Date(this.newUser.datenais));
     formData.append('datenais', formattedDate);
-    
     formData.append('lieunais', this.newUser.lieunais);
     formData.append('password', this.newUser.password);
     if (this.selectedFile) {
       formData.append('img', this.selectedFile, this.selectedFile.name);
     }
-
-    this.userService.signup(formData).subscribe(response => {
-      Swal.fire("Votre compte a été créé avec succès");
-      this.toastr.success("Inscription réussie.", 'Signup', {
+  
+    this.userService.signup(formData).subscribe(response => { 
+      this.toastr.success("Inscription réussie. Veuillez vérifier votre email pour activer votre compte.", 'Signup', {
         timeOut: 5000,
         closeButton: true,
         progressBar: true,
@@ -84,6 +81,7 @@ export class SignUpComponent {
       console.error('Error signing up user', error);
     });
   }
+  
 
   formatDate(date: Date): string {
     const year = date.getFullYear();

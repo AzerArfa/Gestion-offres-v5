@@ -28,11 +28,14 @@ import { ListentreprisesComponent } from './listentreprises/listentreprises.comp
 import { GestioncategoriesComponent } from './gestioncategories/gestioncategories.component';
 import { AdminGuard } from './guards/admin.guard';
 import { ConsulterentrepriseComponent } from './consulterentreprise/consulterentreprise.component';
+import { VerifyEmailComponent } from './verify-email/verify-email.component';
 
 
 
 const routes: Routes = [
   {path:"addOffre/:id",component:AddoffreComponent},
+  
+  { path: 'verify-email', component: VerifyEmailComponent },
   {path:"consulterentreprise/:id",component:ConsulterentrepriseComponent,canActivate:[AdminGuard]},
   {path:"gestioncategories",component:GestioncategoriesComponent,canActivate: [SuperAdminGuard]},
   {path:"demandecreationentreprise",component:DemandecreationentrepriseComponent,canActivate: [AuthGuard]},

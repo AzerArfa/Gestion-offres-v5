@@ -4,6 +4,17 @@ server:
 spring:
   application:
     name: auth-service
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: azerarfa606606@gmail.com
+    password: sfqiycedqioxzjux
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   config:
     import: "optional:configserver:http://localhost:8888"
   servlet:

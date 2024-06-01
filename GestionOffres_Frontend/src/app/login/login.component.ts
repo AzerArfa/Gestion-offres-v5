@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -8,11 +9,45 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   user = { email: '', password: '' };
   err = 0;
+  message: string | null = null;
 
-  constructor(private authService: AuthService, private router: Router,private toastr:ToastrService) { }
+  constructor(
+    private authService: AuthService,
+    private activatedRoute: ActivatedRoute,
+    private toastr:ToastrService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    const token = this.activatedRoute.snapshot.queryParamMap.get('token');
+    if (token) {
+      this.authService.verifyEmail(token).subscribe(
+        response => {
+          this.message = 'E-mail vérifié avec succès!';
+          Swal.fire({
+            icon: 'success',
+            title: 'Verification',
+            text: this.message,
+            showConfirmButton: true,
+            timer: 5000
+          });
+        },
+        error => {
+          this.message = "La vérification de l'e-mail a échoué. Veuillez réessayer.";
+          Swal.fire({
+            icon: 'error',
+            title: 'Verification',
+            text: this.message,
+            showConfirmButton: true,
+            timer: 5000
+          });
+        }
+      );
+    }
+  }
 
   Login(): void {
     console.log('Attempting to log in with user:', this.user); // Log the user attempting to log in

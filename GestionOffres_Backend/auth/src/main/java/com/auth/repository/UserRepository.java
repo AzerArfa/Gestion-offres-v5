@@ -29,4 +29,5 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @Transactional
     @Query(value = "INSERT INTO user_entreprises (user_id, entreprise_id) VALUES (:userId, :entrepriseId)", nativeQuery = true)
     void addUserToEntreprise(UUID userId, UUID entrepriseId);
+	User findByEmailVerificationToken(String token);
 }

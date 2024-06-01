@@ -38,6 +38,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
             // Bypass authentication for login, signup, and visitor paths
             if (exchange.getRequest().getPath().toString().startsWith("/auth/login") ||
+            		 exchange.getRequest().getPath().toString().startsWith("/auth/verify") ||
                 exchange.getRequest().getPath().toString().startsWith("/auth/signup") ||
                 exchange.getRequest().getPath().toString().startsWith("/offer/visitor") ||
                 exchange.getRequest().getPath().toString().equals("/auth/entreprises")) {

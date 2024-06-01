@@ -41,7 +41,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 @Service
 public class AuthServiceImpl implements AuthService {
-
+	@Autowired
+    private MailService mailService;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -150,7 +151,8 @@ userDto.setRoles(roleDtos);
         user.setCin(signupRequest.getCin());
         user.setDatenais(signupRequest.getDatenais());
         user.setLieunais(signupRequest.getLieunais());
-
+        user.setEmailVerificationToken(generateVerificationToken());
+        user.setEmailVerified(false);
         initialPassword.setPassword(new BCryptPasswordEncoder().encode(signupRequest.getPassword()));
         initialPassword.setCreationDate(new Date());
         initialPassword.setUser(user);
@@ -164,9 +166,22 @@ userDto.setRoles(roleDtos);
         }
         user.getRoles().add(userRole);
         User createdUser = userRepository.save(user);
+        sendVerificationEmail(user);
         passwordRepository.save(initialPassword);
         return createdUser.getUserDto();
     }
+    private String generateVerificationToken() {
+        return UUID.randomUUID().toString();
+    }
+    private void sendVerificationEmail(User user) {
+        String to = user.getEmail();
+        String subject = "Vérification de l'e-mail";
+        String body =  "<a href=\"http://localhost:4200/login?token=" + user.getEmailVerificationToken() + "\">Cliquer ici pour verifier votre adresse email.</a>";
+        
+        mailService.sendEmail(to, subject, body);
+    }
+
+
     @Transactional
     @Override
     public ResponseEntity<?> updatePasswordByEmail(ChangePasswordDto changePasswordDto) {

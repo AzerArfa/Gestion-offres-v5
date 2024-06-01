@@ -533,6 +533,18 @@ JSONObject jsonResponse = new JSONObject();
 	            response.put("error", "Error approving enterprise request: " + e.getMessage());
 	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 	        }
+	    } @GetMapping("/verify")
+	    public ResponseEntity<String> verifyEmail(@RequestParam String token) {
+	        User user = userRepository.findByEmailVerificationToken(token);
+	        if (user == null) {
+	            return ResponseEntity.badRequest().body("Invalid token");
+	        }
+
+	        user.setEmailVerified(true);
+	        user.setEmailVerificationToken(null); // clear the token
+	        userRepository.save(user);
+
+	        return ResponseEntity.ok("Email verified successfully");
 	    }
 	  @GetMapping("/download/codetva/{id}")
 public ResponseEntity<byte[]> downloadCodeTVADocument(@PathVariable UUID id) {

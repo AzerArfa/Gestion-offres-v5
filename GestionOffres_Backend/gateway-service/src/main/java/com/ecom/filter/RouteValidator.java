@@ -13,6 +13,7 @@ public class RouteValidator {
 	public static final List<String> openApiEndpoints = Arrays.asList(
 		    "/auth/login",
 		    "/auth/signup",
+		    "/auth/verify",
 		    "/offer/visitor/appeloffres",
 		    "/offer/visitor/categories",
 	        "/offer/visitor/categories/{categorieId}/appeloffres" 

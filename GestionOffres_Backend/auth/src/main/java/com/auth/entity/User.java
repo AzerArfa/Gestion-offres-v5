@@ -22,7 +22,8 @@ public class User implements UserDetails {
 	@Id
     @GeneratedValue(generator = "UUID")
     private UUID id;
-
+	private String emailVerificationToken;
+    private boolean isEmailVerified;
     private String email;
     private String cin;
     private Date datenais;

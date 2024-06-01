@@ -4,6 +4,8 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { authApiURL } from '../config';
 import { User } from '../model/user.model';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +20,10 @@ export class AuthService {
   public isloggedInState: boolean = false;
   public userInfoData: any = null;
 
-  constructor(private http: HttpClient) {
+
+  constructor(private http: HttpClient,
+    private toastr: ToastrService,
+  private router:Router) {
     this.checkLoginStatus(); 
   }
   hasEntreprises(): boolean {
@@ -39,7 +44,9 @@ isAuthenticated(): boolean {
   console.log('Token Present:', !!token);
   return !!token; // Example condition
 }
-
+verifyEmail(token: string): Observable<any> {
+  return this.http.get(`${authApiURL}/verify`, { params: { token }, responseType: 'text' });
+}
   login(user: any): Observable<HttpResponse<any>> {
     return this.http.post<any>(`${authApiURL}/login`, user, { observe: 'response' }).pipe(
       tap((res: HttpResponse<any>) => {
@@ -66,7 +73,17 @@ isAuthenticated(): boolean {
   }
 
   register(user: User): Observable<User> {
-    return this.http.post<User>(`${authApiURL}/signup`, user);
+    return this.http.post<User>(`${authApiURL}/signup`, user).pipe(
+      tap(() => {
+        this.toastr.success('Registration successful. Please check your email to verify your account.', 'Sign Up', {
+          timeOut: 5000,
+          closeButton: true,
+          progressBar: true,
+          positionClass: 'toast-top-right',
+        });
+        this.router.navigate(['/login']);
+      })
+    );
   }
 
   getToken(): string | null {
